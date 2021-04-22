@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', (event) => {
 
     //there is a dropdown that allows us to select the COLOR of our hand
-    const body = document.
+    // const body = document.
     const selectColor = document.getElementById("create-task-form")
     const dropDownStatus = document.getElementById("color")
     
@@ -14,36 +14,30 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 console.log("We selected white")
                   fetchData("white")
                   printNavigation(selectColor)
-
-                //   selectColor.innerHTML = `<p>Make a selection of cards for your hand.</p>`
                 break
 
             case "blue":
                 console.log("We selected blue")
                 fetchData("blue")
                 printNavigation(selectColor)
-                //  selectColor.innerHTML = `<p>Make a selection of cards for your hand.</p>`
                 break
 
             case "red":
                 console.log("We selected red")
                 fetchData("red")
                 printNavigation(selectColor)
-                //  selectColor.innerHTML = `<p>Make a selection of cards for your hand.</p>`
                 break
 
             case "green":
                 console.log("We selected green")
                 fetchData("green")
                 printNavigation(selectColor)
-                //  selectColor.innerHTML = `<p>Make a selection of cards for your hand.</p>`
                 break
 
             case "black":
                 console.log("We selected black")
                 fetchData("black")
                 printNavigation(selectColor)
-                //  selectColor.innerHTML = `<p>Make a selection of cards for your hand.</p>`
                 break
         
         }
