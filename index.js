@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', (event) => {
 
     //there is a dropdown that allows us to select the COLOR of our hand
+    const body = document.
     const selectColor = document.getElementById("create-task-form")
     const dropDownStatus = document.getElementById("color")
     
@@ -12,31 +13,37 @@ document.addEventListener('DOMContentLoaded', (event) => {
             case "white":
                 console.log("We selected white")
                   fetchData("white")
-                //   selectColor.innerHTML = ""
+                  printNavigation(selectColor)
+
+                //   selectColor.innerHTML = `<p>Make a selection of cards for your hand.</p>`
                 break
 
             case "blue":
                 console.log("We selected blue")
                 fetchData("blue")
-                // selectColor.innerHTML = ""
+                printNavigation(selectColor)
+                //  selectColor.innerHTML = `<p>Make a selection of cards for your hand.</p>`
                 break
 
             case "red":
                 console.log("We selected red")
                 fetchData("red")
-                // selectColor.innerHTML = ""
+                printNavigation(selectColor)
+                //  selectColor.innerHTML = `<p>Make a selection of cards for your hand.</p>`
                 break
 
             case "green":
                 console.log("We selected green")
                 fetchData("green")
-                // selectColor.innerHTML = ""
+                printNavigation(selectColor)
+                //  selectColor.innerHTML = `<p>Make a selection of cards for your hand.</p>`
                 break
 
             case "black":
                 console.log("We selected black")
                 fetchData("black")
-                // selectColor.innerHTML = ""
+                printNavigation(selectColor)
+                //  selectColor.innerHTML = `<p>Make a selection of cards for your hand.</p>`
                 break
         
         }
@@ -73,7 +80,7 @@ const displayImages = (arrayOfCards) => {
             return "NO IMAGE AVAILABLE"
         }
     })
-    console.log(arrayOfImages)
+    // console.log(arrayOfImages)
 
     arrayOfImages.forEach(element => {
         // I'm going to create an image and append it
@@ -85,11 +92,17 @@ const displayImages = (arrayOfCards) => {
             const createImages = document.createElement('img')
             createImages.src = element;
             containerImages.append(createImages)
-            
+
         }
 
 
     });
+
+}
+
+const printNavigation = (e) => {
+    //this function will help us display our navigation options after chosing a color
+    e.innerHTML = `<p>Make a selection of cards for your hand.</p>`
 
 }
 
