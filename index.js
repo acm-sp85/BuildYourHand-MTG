@@ -85,6 +85,7 @@ const displayImages = (arrayOfCards) => {
             const createImages = document.createElement('img')
             createImages.src = element;
             containerImages.append(createImages)
+            
         }
 
 
