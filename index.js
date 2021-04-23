@@ -68,28 +68,15 @@ const displayImages = (arrayOfCards) => {
     //photo available it sends a Message
     const arrayOfImages = arrayOfCards.map( e => {
         if (e.imageUrl !== undefined){
-
+            const containerImages = document.getElementById('images-container')
+            const createImages = document.createElement('img')
+            createImages.src = e.imageUrl;
+            containerImages.append(createImages)
             return e.imageUrl
         } else {
             return "NO IMAGE AVAILABLE"
         }
     })
-
-    arrayOfImages.forEach(element => {
-        // I'm going to create an image and append it. If there is no image do nothing
-        if (element === "NO IMAGE AVAILABLE"){
-            console.log("Missing image")
-        } else {
-
-            const containerImages = document.getElementById('images-container')
-            const createImages = document.createElement('img')
-            createImages.src = element;
-            containerImages.append(createImages)
-
-        }
-
-
-    });
 
 }
 
@@ -101,7 +88,7 @@ const printNavigation = (e) => {
 
 //right now this is eliminating target event, but we just want to add a green border to the image when clicked
 clicking.addEventListener('click',(event)=> {
-    console.log(`${event} has been removed`)
+    console.log(`${event.target.innerHTML} has been removed`)
     event.target.remove();
 
   })
