@@ -1,16 +1,12 @@
 document.addEventListener('DOMContentLoaded', (event) => {
     //there is a dropdown that allows us to select the COLOR of our hand
-    // const body = document.
+
     const selectColor = document.getElementById("create-task-form")
     const dropDownStatus = document.getElementById("color")
     const clicking = document.getElementById("images-container")
     const body = document.querySelector("body")
     const createDiv = document.createElement('div')
-    const createUl = document.createElement('ul')
-    const createLi = document.createElement('li')
 
-
-    
     
     
     selectColor.addEventListener('submit' , event =>{
@@ -90,29 +86,34 @@ const displayImages = (arrayOfCards) => {
 
 const printNavigation = (element) => {
     //this function will help us display our navigation options after choosing a color
-    element.innerHTML = `<p>Make a selection of cards for your hand.</p>`
     //temporary explainatory text
-    createDiv.innerHTML= `<p>YOU JUST CREATED ME</p>`
+    element.innerHTML = `<p>Make a selection of cards for your hand.</p>`
     
     //creates a div where we will insert our list of selections
+    createDiv.innerHTML= `<p>YOU JUST CREATED ME</p>`
     body.appendChild(createDiv)
-    createDiv.appendChild(createUl)
 
+    
 }
 
 //EVENT LISTENER: if we click on a card it selects it - adding a "selected" id
 clicking.addEventListener('click',(event)=> {
-    console.log(`${event.target.id} has been selected`)
     
-    createLi.innerText = `${event.target.id}`
-
-    createUl.appendChild(createLi)
+    
     
     if ( event.target.className === ""){
         event.target.className = "selected"
+
+        const ul = document.querySelector('.card-selection-list')
+        const li = document.createElement('li')
+
+        li.innerText = `${event.target.id}`;
+        ul.append(li)
+
     } else {
         event.target.className = ""
     }
+    
   })
 
 
