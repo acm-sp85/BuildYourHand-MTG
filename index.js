@@ -88,11 +88,16 @@ const printNavigation = (e) => {
 
 }
 
-//right now this is eliminating target event, but we just want to add a green border to the image when clicked
+//EVENT LISTENER: if we click on a card it selects it - adding a "selected" id
 clicking.addEventListener('click',(event)=> {
-    console.log(`${event.target.id} has been removed`)
-    // event.target.remove();
-    event.target.className = "selected"
+    console.log(`${event.target.id} has been selected`)
+    if ( event.target.className === ""){
+        event.target.className = "selected"
+    } else {
+        event.target.className = ""
+    }
+
+   
 
   })
 
