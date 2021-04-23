@@ -1,51 +1,52 @@
 document.addEventListener('DOMContentLoaded', (event) => {
-
     //there is a dropdown that allows us to select the COLOR of our hand
     // const body = document.
     const selectColor = document.getElementById("create-task-form")
     const dropDownStatus = document.getElementById("color")
+    const clicking = document.getElementById("images-container")
     
-
+    
+    
     selectColor.addEventListener('submit' , event =>{
         event.preventDefault()
-
+        
         switch (dropDownStatus.value){
             case "white":
                 console.log("We selected white")
-                  fetchData("white")
-                  printNavigation(selectColor)
-                break
-
-            case "blue":
-                console.log("We selected blue")
-                fetchData("blue")
+                fetchData("white")
                 printNavigation(selectColor)
                 break
+                
+                case "blue":
+                    console.log("We selected blue")
+                    fetchData("blue")
+                    printNavigation(selectColor)
+                    break
+                    
+                    case "red":
+                        console.log("We selected red")
+                        fetchData("red")
+                        printNavigation(selectColor)
+                        break
+                        
+                        case "green":
+                            console.log("We selected green")
+                            fetchData("green")
+                            printNavigation(selectColor)
+                            break
+                            
+                            case "black":
+                                console.log("We selected black")
+                                fetchData("black")
+                                printNavigation(selectColor)
+                                break
+                    
+                }
+                            
+                        })
+                        
 
-            case "red":
-                console.log("We selected red")
-                fetchData("red")
-                printNavigation(selectColor)
-                break
-
-            case "green":
-                console.log("We selected green")
-                fetchData("green")
-                printNavigation(selectColor)
-                break
-
-            case "black":
-                console.log("We selected black")
-                fetchData("black")
-                printNavigation(selectColor)
-                break
-        
-        }
-
-    })
-    
-})
-
+                    
 const fetchData = (color) => {
     fetch(`https://api.magicthegathering.io/v1/cards?colors=${color}`)
 
@@ -57,7 +58,6 @@ const fetchData = (color) => {
         const cardNames = arrayOfCards.map(e => {
             return e.name
         })
-        // console.log(cardNames)  
         displayImages(arrayOfCards)                   
     })
 
@@ -74,10 +74,9 @@ const displayImages = (arrayOfCards) => {
             return "NO IMAGE AVAILABLE"
         }
     })
-    // console.log(arrayOfImages)
 
     arrayOfImages.forEach(element => {
-        // I'm going to create an image and append it
+        // I'm going to create an image and append it. If there is no image do nothing
         if (element === "NO IMAGE AVAILABLE"){
             console.log("Missing image")
         } else {
@@ -95,8 +94,16 @@ const displayImages = (arrayOfCards) => {
 }
 
 const printNavigation = (e) => {
-    //this function will help us display our navigation options after chosing a color
+    //this function will help us display our navigation options after choosing a color
     e.innerHTML = `<p>Make a selection of cards for your hand.</p>`
 
 }
 
+//right now this is eliminating target event, but we just want to add a green border to the image when clicked
+clicking.addEventListener('click',(event)=> {
+    console.log(`${event} has been removed`)
+    event.target.remove();
+
+  })
+
+})
