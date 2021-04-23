@@ -71,6 +71,8 @@ const displayImages = (arrayOfCards) => {
             const containerImages = document.getElementById('images-container')
             const createImages = document.createElement('img')
             createImages.src = e.imageUrl;
+            createImages.id = e.name;
+            createImages.className = "";
             containerImages.append(createImages)
             return e.imageUrl
         } else {
@@ -88,8 +90,9 @@ const printNavigation = (e) => {
 
 //right now this is eliminating target event, but we just want to add a green border to the image when clicked
 clicking.addEventListener('click',(event)=> {
-    console.log(`${event.target.innerHTML} has been removed`)
-    event.target.remove();
+    console.log(`${event.target.id} has been removed`)
+    // event.target.remove();
+    event.target.className = "selected"
 
   })
 
