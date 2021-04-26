@@ -93,12 +93,7 @@ const printNavigation = (element) => {
     //this function will help us display our navigation options after choosing a color
     //temporary explainatory text
     element.innerHTML = `<p>Make a selection of cards for your hand.</p>`
-    
-    // //creates a div where we will insert our list of selections
-    // createDiv.innerHTML= `<p>YOU JUST CREATED ME</p>`
-    // // body.appendChild(createDiv)
-
-    
+      
 }
 
 //EVENT LISTENER: if we click on a card it selects it - adding a "selected" id
@@ -110,29 +105,29 @@ clicking.addEventListener('click',(event)=> {
         event.target.className = "selected"
         //adding the selected card Object to the array Selection by finding in the array allCardsWithImages which
         //element shares the same name
-        selection.push(allCardsWithImages.find(element => element.name === event.target.id))
-
-        
-        
+        selection.push(allCardsWithImages.find(element => element.name === event.target.id))       
         
     } else if (event.target.className === "selected") {
         //if we click on a selected card we are going to find out its index on the Selection array and then take it out
         //of the array using Splice
         let indexOfCard = selection.indexOf(allCardsWithImages.find(element => element.name === event.target.id))
-        if (indexOfCard > -1) {
-            selection.splice(indexOfCard, 1);
-            
-            
+        
+        if (confirm(`Deselect ${event.target.id}?`)){
+
+            if (indexOfCard > -1) {
+                selection.splice(indexOfCard, 1);           
+                
+            }
+
+            event.target.className = ""
+
         }
         
-        event.target.className = ""
-        
-        
-        
+                
     }
-    //at the end of all these our array Selection will be updated. Now we need to print it on our Selection-Container
+    //at the end of all these our array Selection will be updated and printed
     printSelection(selection)
-    console.log(selection)
+
     
 })
 
