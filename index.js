@@ -105,37 +105,49 @@ const printNavigation = (element) => {
 clicking.addEventListener('click',(event)=> {
     
     
-    const ul = document.querySelector('.card-selection-list')
     
     if ( event.target.className === ""){
         event.target.className = "selected"
-        const li = document.createElement('li')
-
-        li.innerText = `${event.target.id}`;
-        ul.append(li)
         //adding the selected card Object to the array Selection by finding in the array allCardsWithImages which
         //element shares the same name
         selection.push(allCardsWithImages.find(element => element.name === event.target.id))
 
-
-
-    } else {
+        
+        
+        
+    } else if (event.target.className === "selected") {
         //if we click on a selected card we are going to find out its index on the Selection array and then take it out
         //of the array using Splice
         let indexOfCard = selection.indexOf(allCardsWithImages.find(element => element.name === event.target.id))
         if (indexOfCard > -1) {
             selection.splice(indexOfCard, 1);
-          }
-
+            
+            
+        }
+        
         event.target.className = ""
-
-
-
+        
+        
+        
     }
     //at the end of all these our array Selection will be updated. Now we need to print it on our Selection-Container
+    printSelection(selection)
     console.log(selection)
+    
+})
 
-  })
+function printSelection(selection){
+    const ul = document.querySelector('.card-selection-list')
+    ul.innerHTML = ''
+
+    selection.forEach(element => {
+        const li = document.createElement('li')
+        li.innerText = `${element.name}`;
+        ul.append(li)
+        
+    });
+    
+  }
 
 
 
