@@ -10,6 +10,9 @@ h1,h2 {
 p {
     color: rgb(255, 249, 235);
 }
+li {
+    color: rgb(255, 249, 235);
+}
 
 img {
     object-fit: cover;
@@ -21,6 +24,5 @@ img {
     border-block-color: green;
     box-shadow: 5px 5px 5px rgb(34, 34, 34);
     
-
     
 }

@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const clicking = document.getElementById("images-container")
     const body = document.querySelector("body")
     const createDiv = document.createElement('div')
+    const allCardsWithImages = []
+    const selection= []
 
     
     
@@ -19,33 +21,33 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 printNavigation(selectColor)
                 break
                 
-                case "blue":
-                    console.log("We selected blue")
-                    fetchData("blue")
-                    printNavigation(selectColor)
-                    break
+            case "blue":
+                 console.log("We selected blue")
+                fetchData("blue")
+                printNavigation(selectColor)
+                 break
                     
-                    case "red":
-                        console.log("We selected red")
-                        fetchData("red")
-                        printNavigation(selectColor)
-                        break
+            case "red":
+                console.log("We selected red")
+                fetchData("red")
+                printNavigation(selectColor)
+                    break
                         
-                        case "green":
-                            console.log("We selected green")
-                            fetchData("green")
-                            printNavigation(selectColor)
-                            break
+            case "green":
+                console.log("We selected green")
+                fetchData("green")
+                printNavigation(selectColor)
+                break
                             
-                            case "black":
-                                console.log("We selected black")
-                                fetchData("black")
-                                printNavigation(selectColor)
-                                break
+            case "black":
+                console.log("We selected black")
+                fetchData("black")
+                printNavigation(selectColor)
+                break
                     
                 }
                             
-                        })
+                })
                         
 
                     
@@ -60,7 +62,8 @@ const fetchData = (color) => {
         const cardNames = arrayOfCards.map(e => {
             return e.name
         })
-        displayImages(arrayOfCards)                   
+        displayImages(arrayOfCards)
+
     })
 
 } 
@@ -76,11 +79,13 @@ const displayImages = (arrayOfCards) => {
             createImages.id = e.name;
             createImages.className = "";
             containerImages.append(createImages)
+            allCardsWithImages.push(e)
             return e.imageUrl
         } else {
             return "NO IMAGE AVAILABLE"
         }
     })
+    console.log(allCardsWithImages)
 
 }
 
@@ -89,9 +94,9 @@ const printNavigation = (element) => {
     //temporary explainatory text
     element.innerHTML = `<p>Make a selection of cards for your hand.</p>`
     
-    //creates a div where we will insert our list of selections
-    createDiv.innerHTML= `<p>YOU JUST CREATED ME</p>`
-    body.appendChild(createDiv)
+    // //creates a div where we will insert our list of selections
+    // createDiv.innerHTML= `<p>YOU JUST CREATED ME</p>`
+    // // body.appendChild(createDiv)
 
     
 }
@@ -100,20 +105,36 @@ const printNavigation = (element) => {
 clicking.addEventListener('click',(event)=> {
     
     
+    const ul = document.querySelector('.card-selection-list')
     
     if ( event.target.className === ""){
         event.target.className = "selected"
-
-        const ul = document.querySelector('.card-selection-list')
         const li = document.createElement('li')
 
         li.innerText = `${event.target.id}`;
         ul.append(li)
+        //adding the selected card Object to the array Selection by finding in the array allCardsWithImages which
+        //element shares the same name
+        selection.push(allCardsWithImages.find(element => element.name === event.target.id))
+
+
 
     } else {
+        //if we click on a selected card we are going to find out its index on the Selection array and then take it out
+        //of the array using Splice
+        let indexOfCard = selection.indexOf(allCardsWithImages.find(element => element.name === event.target.id))
+        if (indexOfCard > -1) {
+            selection.splice(indexOfCard, 1);
+          }
+
         event.target.className = ""
+
+
+
     }
-    
+    //at the end of all these our array Selection will be updated. Now we need to print it on our Selection-Container
+    console.log(selection)
+
   })
 
 
