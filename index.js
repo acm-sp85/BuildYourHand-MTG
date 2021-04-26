@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const createDiv = document.createElement('div')
     const allCardsWithImages = []
     const selection= []
+    let counter = 0
+
 
     
     
@@ -99,13 +101,16 @@ const printNavigation = (element) => {
 //EVENT LISTENER: if we click on a card it selects it - adding a "selected" id
 clicking.addEventListener('click',(event)=> {
     
+
+
     
     
     if ( event.target.className === ""){
         event.target.className = "selected"
         //adding the selected card Object to the array Selection by finding in the array allCardsWithImages which
         //element shares the same name
-        selection.push(allCardsWithImages.find(element => element.name === event.target.id))       
+        selection.push(allCardsWithImages.find(element => element.name === event.target.id))      
+
         
     } else if (event.target.className === "selected") {
         //if we click on a selected card we are going to find out its index on the Selection array and then take it out
@@ -120,6 +125,7 @@ clicking.addEventListener('click',(event)=> {
             }
 
             event.target.className = ""
+  
 
         }
         
@@ -127,6 +133,8 @@ clicking.addEventListener('click',(event)=> {
     }
     //at the end of all these our array Selection will be updated and printed
     printSelection(selection)
+    
+
 
     
 })
