@@ -4,8 +4,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const selectColor = document.getElementById("create-task-form")
     const dropDownStatus = document.getElementById("color")
     const clicking = document.getElementById("images-container")
+    const clickingSelect = document.getElementById("selects")
+    const clickingGoBack = document.getElementById("go-to-main")
     const body = document.querySelector("body")
     const createDiv = document.createElement('div')
+    const containerImages = document.getElementById('images-container')
+    const containerImagesSelected = document.getElementById('selection-container')
+
+
     const allCardsWithImages = []
     const selection= []
     let counter = 0
@@ -73,9 +79,10 @@ const fetchData = (color) => {
 const displayImages = (arrayOfCards) => {
     //it's given an array of cards and it returns an array with the image path of each element, if there is no
     //photo available it sends a Message
+    document.querySelector("button#selects").style.visibility = "visible";
+
     const arrayOfImages = arrayOfCards.map( e => {
         if (e.imageUrl !== undefined){
-            const containerImages = document.getElementById('images-container')
             const createImages = document.createElement('img')
             createImages.src = e.imageUrl;
             createImages.id = e.name;
@@ -100,10 +107,6 @@ const printNavigation = (element) => {
 
 //EVENT LISTENER: if we click on a card it selects it - adding a "selected" id
 clicking.addEventListener('click',(event)=> {
-    
-
-
-    
     
     if ( event.target.className === ""){
         event.target.className = "selected"
@@ -151,20 +154,33 @@ function printSelection(selection){
     });
     
   }
+  
+  clickingSelect.addEventListener('click', ()=> {
+
+      containerImagesSelected.innerHTML = ""
+      containerImages.style.visibility = "hidden";
+      document.querySelector("button#go-to-main").style.visibility = "visible";
 
 
 
+      selection.forEach(e => {
+        const createImages = document.createElement('img')
+        createImages.src = e.imageUrl;
+        createImages.id = e.name;
+        createImages.className = "";
+        containerImagesSelected.append(createImages)
 
+          
+      });
 
+  })
 
+  //NAVIGATION: ereases html inside selected images div and mutates visibility
+  clickingGoBack.addEventListener('click', ()=>{
+    containerImages.style.visibility = "visible";
+    containerImagesSelected.innerHTML = ""
 
-
-
-
-
-
-
-
+  })
   
 
 })
