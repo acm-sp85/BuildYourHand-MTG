@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const clickingSelect = document.getElementById("selects")
     const clickingGoBack = document.getElementById("go-to-main")
     const clickingClearSelection = document.getElementById("clear-selection")
+    const clickingInsideSelection = document.getElementById("selection-container")
     const body = document.querySelector("body")
     const createDiv = document.createElement('div')
     const containerImages = document.getElementById('images-container')
@@ -63,10 +64,19 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const fetchData = (color) => {
         fetch(`https://api.magicthegathering.io/v1/cards?colors=${color}`)
 
-            .then((result) => result.json())
+            .then((result) => {
+
+                
+                result.json()
+                console.log(result.headers.get("link"))
+                debugger;
+                // for(const header of result.headers.entries()){
+                //     console.log( header)
+                // }
+            })
             .then((data) => {
                 const arrayOfCards = data.cards
-                console.log(arrayOfCards)
+
 
                 const cardNames = arrayOfCards.map(e => {
                     return e.name
@@ -108,6 +118,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     }
 
+
+
+
+
+
     //EVENT LISTENER: if we click on a card it selects it - adding a "selected" id
     clicking.addEventListener('click', (event) => {
 
@@ -130,24 +145,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 
         }
-        //at the end of all these our array Selection will be updated and printed
-        // printSelection(selection)
 
 
     })
 
-    // function printSelection(selection) {
-    //     const ul = document.querySelector('.card-selection-list')
-    //     ul.innerHTML = ''
-
-    //     selection.forEach(element => {
-    //         const li = document.createElement('li')
-    //         li.innerText = `${element.name}`;
-    //         ul.append(li)
-
-    //     });
-
-    // }
 
     clickingSelect.addEventListener('click', () => {
 
@@ -161,7 +162,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             const createImages = document.createElement('img')
             createImages.src = e.imageUrl;
             createImages.id = e.name;
-            createImages.className = "";
+            createImages.className = "selected";
             containerImagesSelected.append(createImages)
 
 
@@ -191,5 +192,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     })
 
+    clickingInsideSelection.addEventListener('mouseover', (event) => {
+
+        console.log(event.target.id)
+    })
 
 })
