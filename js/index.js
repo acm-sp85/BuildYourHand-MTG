@@ -68,19 +68,21 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
                 
                 result.json()
-                console.log(result.headers.get("link"))
-                debugger;
+                // console.log(result.headers.get("link"))
+
                 // for(const header of result.headers.entries()){
                 //     console.log( header)
                 // }
             })
             .then((data) => {
-                const arrayOfCards = data.cards
+                // const arrayOfCards = data.cards
+                console.log(data)
 
 
                 const cardNames = arrayOfCards.map(e => {
                     return e.name
                 })
+
                 displayImages(arrayOfCards)
 
             })
