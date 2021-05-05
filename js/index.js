@@ -64,25 +64,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const fetchData = (color) => {
         fetch(`https://api.magicthegathering.io/v1/cards?colors=${color}`)
 
-            .then((result) => {
-
-                
-                result.json()
-                // console.log(result.headers.get("link"))
-
-                // for(const header of result.headers.entries()){
-                //     console.log( header)
-                // }
-            })
+            .then((result) => result.json())
             .then((data) => {
-                // const arrayOfCards = data.cards
-                console.log(data)
-
+                const arrayOfCards = data.cards
+                console.log(arrayOfCards)
 
                 const cardNames = arrayOfCards.map(e => {
                     return e.name
                 })
-
                 displayImages(arrayOfCards)
 
             })
