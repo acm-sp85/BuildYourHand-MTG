@@ -64,7 +64,20 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const fetchData = (color) => {
         fetch(`https://api.magicthegathering.io/v1/cards?colors=${color}`)
 
-            .then((result) => result.json())
+            .then((result) => {
+                const page = result.headers.get("link")
+                debugger
+                // page.split(' ') we were writing this on the console to get an array with the addresses we needed to see
+                //my idea is to hard code the pages we want to go and add a counter to go to the next page
+                //we will know which is the last page by seeing a result smaller than 100 items
+                //when hitting that last page we will disable the next button
+
+                 console.log(result.headers.get("link"))
+
+
+                return result.json()
+            
+            })
             .then((data) => {
                 const arrayOfCards = data.cards
                 // console.log(arrayOfCards)
