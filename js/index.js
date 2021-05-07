@@ -67,7 +67,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
             .then((result) => result.json())
             .then((data) => {
                 const arrayOfCards = data.cards
-                console.log(arrayOfCards)
+                // console.log(arrayOfCards)
+                console.log(data)
 
                 const cardNames = arrayOfCards.map(e => {
                     return e.name
