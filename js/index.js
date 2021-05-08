@@ -14,6 +14,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const createDiv = document.createElement('div')
     const containerImages = document.getElementById('images-container')
     const containerImagesSelected = document.getElementById('selection-container')
+    const name = document.querySelector('[name="name"]')
+    const searchByName = document.querySelector(".search-card-form")
 
 
     const allCardsWithImages = []
@@ -190,6 +192,27 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 
         }
+
+
+    })
+
+    searchByName.addEventListener('submit', (event) => {
+        event.preventDefault()
+        console.log(name.value)
+
+        fetch(`https://api.magicthegathering.io/v1/cards?name=${name.value}`)
+        .then(result => result.json())
+        .then(data => {
+            console.log(data)
+            const arrayOfCards = data.cards
+                // console.log(arrayOfCards)
+                console.log(data)
+
+                const cardNames = arrayOfCards.map(e => {
+                    return e.name
+                })
+                displayImages(arrayOfCards)
+        })
 
 
     })
