@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     //there is a dropdown that allows us to select the COLOR of our hand
 
     const selectColor = document.getElementById("create-task-form")
+    const filterBy = document.getElementById("filter-by")
+    const filterByDropDown = document.getElementById("filter")
     const dropDownStatus = document.getElementById("color")
     const clicking = document.getElementById("images-container")
     const clickingSelect = document.getElementById("selects")
@@ -65,18 +67,18 @@ document.addEventListener('DOMContentLoaded', (event) => {
         fetch(`https://api.magicthegathering.io/v1/cards?colors=${color}`)
 
             .then((result) => {
-                const page = result.headers.get("link")
-                debugger
+                // const page = result.headers.get("link")
+                // debugger
                 // page.split(' ') we were writing this on the console to get an array with the addresses we needed to see
                 //my idea is to hard code the pages we want to go and add a counter to go to the next page
                 //we will know which is the last page by seeing a result smaller than 100 items
                 //when hitting that last page we will disable the next button
 
-                 console.log(result.headers.get("link"))
+                // console.log(result.headers.get("link"))
 
 
                 return result.json()
-            
+
             })
             .then((data) => {
                 const arrayOfCards = data.cards
@@ -112,9 +114,48 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 return "NO IMAGE AVAILABLE"
             }
         })
-        console.log(allCardsWithImages)
+
 
     }
+
+
+
+
+
+
+
+    filterBy.addEventListener('submit',(event) =>{
+        event.preventDefault()
+        clicking.innerHTML=""
+
+        let selectedFilter = filterByDropDown.value
+        let filteredSelection = []
+        
+        if(filteredSelection.length === 0){
+            
+            filteredSelection = allCardsWithImages.filter( (array) => {
+                
+                return array.types[0] === selectedFilter
+                
+            })
+            displayImages(filteredSelection)
+            
+        } else {
+            for(const e of filteredSelection){
+                filteredSelection[e].pop()
+            }
+
+            displayImages(filteredSelection)
+        }
+        
+        
+        
+
+
+      })
+
+
+
 
     const printNavigation = (element) => {
         //this function will help us display our navigation options after choosing a color
@@ -122,7 +163,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
         element.innerHTML = `<p>Make a selection of cards for your hand.</p>`
 
     }
-
 
 
 
