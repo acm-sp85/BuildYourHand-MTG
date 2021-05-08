@@ -32,30 +32,35 @@ document.addEventListener('DOMContentLoaded', (event) => {
             case "white":
                 console.log("We selected white")
                 fetchData("white")
+                clicking.innerHTML = ""
                 printNavigation(selectColor)
                 break
 
             case "blue":
                 console.log("We selected blue")
                 fetchData("blue")
+                clicking.innerHTML = ""
                 printNavigation(selectColor)
                 break
 
             case "red":
                 console.log("We selected red")
                 fetchData("red")
+                clicking.innerHTML = ""
                 printNavigation(selectColor)
                 break
 
             case "green":
                 console.log("We selected green")
                 fetchData("green")
+                clicking.innerHTML = ""
                 printNavigation(selectColor)
                 break
 
             case "black":
                 console.log("We selected black")
                 fetchData("black")
+                clicking.innerHTML = ""
                 printNavigation(selectColor)
                 break
 
@@ -126,45 +131,45 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 
 
-    filterBy.addEventListener('submit',(event) =>{
+    filterBy.addEventListener('submit', (event) => {
         event.preventDefault()
-        clicking.innerHTML=""
+        clicking.innerHTML = ""
 
         let selectedFilter = filterByDropDown.value
         let filteredSelection = []
-        
-        if(filteredSelection.length === 0){
-            
-            filteredSelection = allCardsWithImages.filter( (array) => {
-                
+
+        if (filteredSelection.length === 0) {
+
+            filteredSelection = allCardsWithImages.filter((array) => {
+
                 return array.types[0] === selectedFilter
-                
+
             })
             displayImages(filteredSelection)
-            
+
         } else {
-            for(const e of filteredSelection){
+            for (const e of filteredSelection) {
                 filteredSelection[e].pop()
             }
-
+            
             displayImages(filteredSelection)
         }
-        
-        
-        
-
-
-      })
 
 
 
 
-    const printNavigation = (element) => {
-        //this function will help us display our navigation options after choosing a color
-        //temporary explainatory text
-        element.innerHTML = `<p>Make a selection of cards for your hand.</p>`
 
-    }
+    })
+
+
+
+
+    // const printNavigation = (element) => {
+    //     //this function will help us display our navigation options after choosing a color
+    //     //temporary explainatory text
+    //     element.innerHTML = `<p>Make a selection of cards for your hand.</p>`
+
+    // }
 
 
 
@@ -201,18 +206,20 @@ document.addEventListener('DOMContentLoaded', (event) => {
         console.log(name.value)
 
         fetch(`https://api.magicthegathering.io/v1/cards?name=${name.value}`)
-        .then(result => result.json())
-        .then(data => {
-            console.log(data)
-            const arrayOfCards = data.cards
+            .then(result => result.json())
+            .then(data => {
+                console.log(data)
+                const arrayOfCards = data.cards
                 // console.log(arrayOfCards)
                 console.log(data)
 
                 const cardNames = arrayOfCards.map(e => {
                     return e.name
                 })
+                clicking.innerHTML = ""
+
                 displayImages(arrayOfCards)
-        })
+            })
 
 
     })
@@ -260,9 +267,22 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     })
 
-    clickingInsideSelection.addEventListener('mouseover', (event) => {
+    clickingInsideSelection.addEventListener('click', (event) => {
 
-        console.log(event.target.id)
+        // console.log(event.target.id)
+        if (event.target.className === "selected") {
+
+            let indexOfCard = selection.indexOf(allCardsWithImages.find(element => element.name === event.target.id))
+
+            if (indexOfCard > -1) {
+                selection.splice(indexOfCard, 1);
+
+            }
+
+            event.target.className = ""
+
+
+        }
     })
 
 })

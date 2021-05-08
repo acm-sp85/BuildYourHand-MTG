@@ -17,6 +17,7 @@ li {
 img {
     object-fit: cover;
     margin: 2px;
+    max-height: 300px;
 }
 
 .selected {
