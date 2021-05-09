@@ -1,4 +1,5 @@
-let pageCounter = 0
+//Starting effectively by page 2 cause some of the first pages of the API are repeated...
+let pageCounter = 1
 let currentColor
 document.addEventListener('DOMContentLoaded', (event) => {
 
