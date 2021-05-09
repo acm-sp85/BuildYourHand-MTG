@@ -70,11 +70,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 
 
-    const displayImages = (arrayOfCards) => {
+
+    function displayImages(arrayOfCards){
         //it's given an array of cards and it returns an array with the image path of each element, if there is no
         //photo available it sends a Message
-        document.querySelector("button#selects").style.visibility = "visible";
-        document.getElementById("clear-selection").style.visibility = "visible";
+        // document.querySelector("button#selects").style.visibility = "visible";
+        // document.getElementById("clear-selection").style.visibility = "visible";
 
 
         const arrayOfImages = arrayOfCards.map(e => {
@@ -90,8 +91,25 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 return "NO IMAGE AVAILABLE"
             }
         })
+        
+        
+    }
+    function displaySelected(event) {
+        containerImagesSelected.innerHTML = ""
+        containerImages.style.visibility = "hidden";
+        document.querySelector("button#go-to-main").style.visibility = "visible";
 
 
+
+        selection.forEach(e => {
+            const createImages = document.createElement('img')
+            createImages.src = e.imageUrl;
+            createImages.id = e.name;
+            createImages.className = "selected";
+            containerImagesSelected.append(createImages)
+
+
+        });
     }
 
 
@@ -163,23 +181,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
 
 
-    function displaySelected(event) {
-        containerImagesSelected.innerHTML = ""
-        containerImages.style.visibility = "hidden";
-        document.querySelector("button#go-to-main").style.visibility = "visible";
-
-
-
-        selection.forEach(e => {
-            const createImages = document.createElement('img')
-            createImages.src = e.imageUrl;
-            createImages.id = e.name;
-            createImages.className = "selected";
-            containerImagesSelected.append(createImages)
-
-
-        });
-    }
 
 
     //OBSOLETE ---- POSSIBLE DELETE
@@ -219,38 +220,40 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 console.log("We selected white")
                 fetchData("white")
                 clicking.innerHTML = ""
-                printNavigation(selectColor)
                 break
 
             case "blue":
                 console.log("We selected blue")
                 fetchData("blue")
                 clicking.innerHTML = ""
-                printNavigation(selectColor)
                 break
 
             case "red":
                 console.log("We selected red")
                 fetchData("red")
                 clicking.innerHTML = ""
-                printNavigation(selectColor)
                 break
 
             case "green":
                 console.log("We selected green")
                 fetchData("green")
                 clicking.innerHTML = ""
-                printNavigation(selectColor)
                 break
 
             case "black":
                 console.log("We selected black")
                 fetchData("black")
                 clicking.innerHTML = ""
-                printNavigation(selectColor)
                 break
 
         }
 
     }
 })
+
+
+/* NOTES
+
+to search by name inside of specific color:
+https://api.magicthegathering.io/v1/cards?colors=red&name=rat
+
