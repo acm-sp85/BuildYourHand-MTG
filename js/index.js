@@ -48,15 +48,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
         fetch(`https://api.magicthegathering.io/v1/cards?colors=${color}&page=${pageCounter}`)
 
             .then((result) => {
-                // const page = result.headers.get("link")
-                // debugger
-                // page.split(' ') we were writing this on the console to get an array with the addresses we needed to see
-                //my idea is to hard code the pages we want to go and add a counter to go to the next page
-                //we will know which is the last page by seeing a result smaller than 100 items
-                //when hitting that last page we will disable the next button
-
-                // console.log(result.headers.get("link"))
-
 
                 return result.json()
 
@@ -142,23 +133,28 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     function selectCard(event) {
 
-        if (event.target.className === "") {
-            event.target.className = "selected"
-            //adding the selected card Object to the array Selection by finding in the array allCardsWithImages which
-            //element shares the same name
-            selection.push(allCardsWithImages.find(element => element.name === event.target.id))
+        if(event.target.id != "selection-container" ){
 
-        } else if (event.target.className === "selected") {
-
-            let indexOfCard = selection.indexOf(allCardsWithImages.find(element => element.name === event.target.id))
-
-            if (indexOfCard > -1) {
-                selection.splice(indexOfCard, 1);
-
+            if (event.target.className === "") {
+                event.target.className = "selected"
+                //adding the selected card Object to the array Selection by finding in the array allCardsWithImages which
+                //element shares the same name
+                selection.push(allCardsWithImages.find(element => element.name === event.target.id))
+    
+            } else if (event.target.className === "selected") {
+    
+                let indexOfCard = selection.indexOf(allCardsWithImages.find(element => element.name === event.target.id))
+    
+                if (indexOfCard > -1) {
+                    selection.splice(indexOfCard, 1);
+    
+                }
+    
+                event.target.className = ""
+    
+    
             }
-
-            event.target.className = ""
-
+        } else {
 
         }
     }
@@ -172,18 +168,27 @@ document.addEventListener('DOMContentLoaded', (event) => {
         filterBy.style.visibility = "visible"
         containerImages.innerHTML = ""
 
+
         let selectedFilter = filterByDropDown.value
         filteredSelection.splice(0, filteredSelection.length)
 
+        if(selectedFilter === "None"){
+            console.log("no filter")
+            displayImages(allCardsWithImages)
+            
 
-        filteredSelection = allCardsWithImages.filter((array) => {
+        } else {
 
-            return array.types[0] === selectedFilter
 
-        })
-        displayImages(filteredSelection)
-        // debugger
-        filteredSelection.splice(0, filteredSelection.length)
+            filteredSelection = allCardsWithImages.filter((array) => {
+    
+                return array.types[0] === selectedFilter
+    
+            })
+            displayImages(filteredSelection)
+            // debugger
+            filteredSelection.splice(0, filteredSelection.length)
+        }
 
 
     }
