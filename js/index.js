@@ -1,47 +1,51 @@
+let pageCounter = 0
+let currentColor
 document.addEventListener('DOMContentLoaded', (event) => {
 
 
     const selectColor = document.getElementById("create-task-form")
     const filterBy = document.getElementById("filter-by")
     const filterByDropDown = document.getElementById("filter")
+    const filterButton = document.getElementById("filter-button")
     const dropDownStatus = document.getElementById("color")
-    const clicking = document.getElementById("images-container")
     const clickingSelect = document.getElementById("selects")
     const clickingGoBack = document.getElementById("go-to-main")
-    const clickingClearSelection = document.getElementById("clear-selection")
     const clickingInsideSelection = document.getElementById("selection-container")
-    const body = document.querySelector("body")
-    const createDiv = document.createElement('div')
     const containerImages = document.getElementById('images-container')
-    const containerImagesSelected = document.getElementById('selection-container')
     const name = document.querySelector('[name="name"]')
+    const nameButton = document.querySelector('input[name="submit"]')
+    const filterDrop = document.querySelector('.filter-selected')
     const searchByName = document.querySelector(".search-card-form")
+    const buttonClearSelection = document.getElementById("clear-selection")
+    const buttonShowAll = document.querySelector("button#go-to-main")
+    const colorButton = document.querySelector('input[name="color-button"]')
+    const buttonSelects = document.querySelector("button#selects")
+    const buttonPrevious = document.querySelector("button#previous-page")
+    const buttonNext = document.querySelector("button#next-page")
     const allCardsWithImages = []
     let selection = []
-    let counter = 0
+    let filteredSelection = []
+
+
 
     //EVENT LISTENERS
-    selectColor.addEventListener('submit', event => { colorSelect(event) })
-    filterBy.addEventListener('submit', (event) => { filterArray(event) })
-    clicking.addEventListener('click', (event) => { selectCard(event) })
-    clickingInsideSelection.addEventListener('click', (event) => { selectCard(event) })
-    clickingClearSelection.addEventListener('click', (event) => { clearSelection(event) })
-    clickingSelect.addEventListener('click', (event) => { displaySelected(event) })
-    searchByName.addEventListener('submit', (event) => {
-        event.preventDefault()
-        fetchDataByName(event)
-    })
+    selectColor.addEventListener('submit', event => colorSelect(event))
+    filterBy.addEventListener('submit', (event) => filterArray(event))
+    containerImages.addEventListener('click', (event) => selectCard(event))
+    clickingInsideSelection.addEventListener('click', (event) => selectCard(event))
+    buttonClearSelection.addEventListener('click', (event) => clearSelection(event))
+    clickingSelect.addEventListener('click', (event) => displaySelected(event))
+    clickingGoBack.addEventListener('click', (event) => showAll(event))
+    searchByName.addEventListener('submit', (event) => fetchDataByName(event))
+    buttonPrevious.addEventListener('click', () => previousPage(event))
+    buttonNext.addEventListener('click', () => nextPage(event))
 
-    clickingGoBack.addEventListener('click', () => {
-        containerImages.style.visibility = "visible";
-        containerImagesSelected.innerHTML = ""
-
-    })
 
     //FUNCTIONS
 
     const fetchData = (color) => {
-        fetch(`https://api.magicthegathering.io/v1/cards?colors=${color}`)
+
+        fetch(`https://api.magicthegathering.io/v1/cards?colors=${color}&page=${pageCounter}`)
 
             .then((result) => {
                 // const page = result.headers.get("link")
@@ -62,21 +66,30 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 const cardNames = arrayOfCards.map(e => {
                     return e.name
                 })
+                console.log(arrayOfCards)
+                containerImages.innerHTML = ""
                 displayImages(arrayOfCards)
             })
 
+    }
+    function nextPage(event) {
+        pageCounter++
+        console.log("next page")
+        fetchData(currentColor)
+    }
+    function previousPage(event) {
+        pageCounter--
+        console.log("prev page")
+        fetchData(currentColor)
     }
 
 
 
 
 
-    function displayImages(arrayOfCards){
+    function displayImages(arrayOfCards) {
         //it's given an array of cards and it returns an array with the image path of each element, if there is no
         //photo available it sends a Message
-        // document.querySelector("button#selects").style.visibility = "visible";
-        // document.getElementById("clear-selection").style.visibility = "visible";
-
 
         const arrayOfImages = arrayOfCards.map(e => {
             if (e.imageUrl !== undefined) {
@@ -91,14 +104,16 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 return "NO IMAGE AVAILABLE"
             }
         })
-        
-        
+
+
     }
     function displaySelected(event) {
-        containerImagesSelected.innerHTML = ""
+        clickingInsideSelection.innerHTML = ""
         containerImages.style.visibility = "hidden";
-        document.querySelector("button#go-to-main").style.visibility = "visible";
-
+        buttonShowAll.style.visibility = "visible";
+        buttonClearSelection.style.visibility = "visible";
+        buttonSelects.style.visibility = "visible";
+        filterBy.style.visibility = "visible"
 
 
         selection.forEach(e => {
@@ -106,10 +121,22 @@ document.addEventListener('DOMContentLoaded', (event) => {
             createImages.src = e.imageUrl;
             createImages.id = e.name;
             createImages.className = "selected";
-            containerImagesSelected.append(createImages)
-
-
+            clickingInsideSelection.append(createImages)
         });
+        nameButton.disabled = true
+        name.disabled = true
+        dropDownStatus.disabled = true
+        colorButton.disabled = true
+        filterDrop.disabled = true
+        filterButton.disabled = true
+
+
+
+
+
+
+
+
     }
 
 
@@ -137,33 +164,34 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
 
 
+
+
+
     function filterArray(event) {
         event.preventDefault()
-        clicking.innerHTML = ""
+        filterBy.style.visibility = "visible"
+        containerImages.innerHTML = ""
 
         let selectedFilter = filterByDropDown.value
-        let filteredSelection = []
+        filteredSelection.splice(0, filteredSelection.length)
 
-        if (filteredSelection.length === 0) {
 
-            filteredSelection = allCardsWithImages.filter((array) => {
+        filteredSelection = allCardsWithImages.filter((array) => {
 
-                return array.types[0] === selectedFilter
+            return array.types[0] === selectedFilter
 
-            })
-            displayImages(filteredSelection)
+        })
+        displayImages(filteredSelection)
+        // debugger
+        filteredSelection.splice(0, filteredSelection.length)
 
-        } else {
-            for (const e of filteredSelection) {
-                filteredSelection[e].pop()
-            }
-
-            displayImages(filteredSelection)
-        }
 
     }
 
     function fetchDataByName(event) {
+        event.preventDefault()
+        filterBy.style.visibility = "visible"
+
 
         fetch(`https://api.magicthegathering.io/v1/cards?name=${name.value}`)
             .then(result => result.json())
@@ -174,7 +202,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 const cardNames = arrayOfCards.map(e => {
                     return e.name
                 })
-                clicking.innerHTML = ""
+                containerImages.innerHTML = ""
 
                 displayImages(arrayOfCards)
             })
@@ -183,32 +211,33 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 
 
-    //OBSOLETE ---- POSSIBLE DELETE
-    function clickInSelection(event) {
-        // console.log(event.target.id)
-        if (event.target.className === "selected") {
-
-            let indexOfCard = selection.indexOf(allCardsWithImages.find(element => element.name === event.target.id))
-
-            if (indexOfCard > -1) {
-                selection.splice(indexOfCard, 1);
-
-            }
-
-            event.target.className = ""
-
-
-        }
-    }
     function clearSelection(event) {
         console.log("clear")
-        containerImagesSelected.innerHTML = ""
 
         const classSelected = document.querySelectorAll(".selected");
         for (i = 0; i < classSelected.length; i++) {
             classSelected[i].className = "";
         }
+        clickingInsideSelection.innerHTML = ""
         selection = []
+
+    }
+
+    function showAll(event) {
+        buttonShowAll.style.visibility = "hidden";
+        buttonClearSelection.style.visibility = "hidden";
+        containerImages.style.visibility = "visible";
+        clickingInsideSelection.innerHTML = ""
+        nameButton.disabled = false
+        name.disabled = false
+        dropDownStatus.disabled = false
+        colorButton.disabled = false
+        filterDrop.disabled = false
+        filterButton.disabled = false
+
+
+
+
 
     }
 
@@ -218,35 +247,51 @@ document.addEventListener('DOMContentLoaded', (event) => {
         switch (dropDownStatus.value) {
             case "white":
                 console.log("We selected white")
+                currentColor = "white"
                 fetchData("white")
-                clicking.innerHTML = ""
+                containerImages.innerHTML = ""
                 break
 
             case "blue":
                 console.log("We selected blue")
+                currentColor = "blue"
                 fetchData("blue")
-                clicking.innerHTML = ""
+                containerImages.innerHTML = ""
                 break
 
             case "red":
                 console.log("We selected red")
+                currentColor = "red"
                 fetchData("red")
-                clicking.innerHTML = ""
+                containerImages.innerHTML = ""
                 break
 
             case "green":
                 console.log("We selected green")
+                currentColor = "green"
                 fetchData("green")
-                clicking.innerHTML = ""
+                containerImages.innerHTML = ""
                 break
 
             case "black":
                 console.log("We selected black")
+                currentColor = "black"
                 fetchData("black")
-                clicking.innerHTML = ""
+                containerImages.innerHTML = ""
                 break
 
         }
+        // filterBy.style.visibility = "visible"
+        buttonShowAll.disabled = false
+        buttonClearSelection.disabled = false
+        buttonSelects.disabled = false
+        filterButton.disabled = false
+        filterDrop.disabled = false
+
+
+
+
+
 
     }
 })
@@ -257,3 +302,5 @@ document.addEventListener('DOMContentLoaded', (event) => {
 to search by name inside of specific color:
 https://api.magicthegathering.io/v1/cards?colors=red&name=rat
 
+
+*/

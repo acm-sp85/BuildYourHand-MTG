@@ -7,12 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/style.css">
     <script src="./js/index.js"></script>
-    <title>Build Your Hand - MTG</title>
+    <title>Build Your Deck - MTG</title>
 </head>
 
 <body>
     <h1>Magic The Gathering</h1>
-    <h2>Build your own hand</h2>
+    <h2>Build your own Deck</h2>
     <form id="create-task-form" action="" method="POST">
         <p>Choose your preferred deck color:</p>
         <select name="" id="color" class="color-selected">
@@ -23,33 +23,8 @@
             <option value="green">Green</option>
             <option value="black">Black</option>
         </select>
-        <input type="submit" value="Select">
+        <input type="submit" value="Select" name="color-button">
     </form>
-    <form id="filter-by" action="">
-        <p>Filter by</p>
-        <select name="" id="filter" class="filter-selected">
-            <option value="" attribute=""></option>
-            <option value="Artifact">Artifact</option>
-            <option value="Creature">Creature</option>
-            <option value="Enchantment">Enchantment</option>
-            <option value="Instant">Instant</option>
-            <option value="Land">Land</option>
-        </select>
-        <input type="submit" value="filter">
-        
-        
-        
-    </form>
-    <button id="selects" style="visibility: visible">MY SELECTS</button>
-    <button id="clear-selection" style="visibility: visible">CLEAR SELECTION</button>
-    <button id="go-to-main" style="visibility: visible">SHOW ALL</button>
-    <div id="selection-container">
-        <p class="centered">SELECTION:</p>
-        <ul class="card-selection-list"></ul>
-        
-        
-    </div>
-    
     <div class="container" style="visibility: visible">
         <form class="search-card-form">
             <p>SEARCH BY NAME</p>
@@ -59,7 +34,34 @@
             
             <input type="submit" name="submit" value="search card" class="submit" />
         </form>
+     </div>   
+    <form id="filter-by" action="" style="visibility: visible;" >
+        <p>Filter by</p>
+        <select name="filter-drop-down" id="filter" class="filter-selected" disabled="true">
+            <option value="" attribute=""></option>
+            <option value="Artifact">Artifact</option>
+            <option value="Creature">Creature</option>
+            <option value="Enchantment">Enchantment</option>
+            <option value="Instant">Instant</option>
+            <option value="Land">Land</option>
+        </select>
+        <input type="submit" value="filter" disabled="true" id="filter-button">
         
+        
+        
+    </form>
+    <button id="selects" style="visibility: visible" disabled="true">GO TO YOUR SELECTION</button>
+    <button id="clear-selection" disabled="true" style="visibility: hidden">CLEAR SELECTION</button>
+    <button id="go-to-main" disabled="true" style="visibility: hidden">SHOW ALL</button>
+    <div id="selection-container">
+
+        <ul class="card-selection-list"></ul>
+        
+        
+    </div>
+    <button id="previous-page"> < </button>
+    <button id="next-page"> > </button>
+    
     <div id="images-container" class="images-container"></div>
 
         
