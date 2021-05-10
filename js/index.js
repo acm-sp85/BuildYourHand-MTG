@@ -134,26 +134,26 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     function selectCard(event) {
 
-        if(event.target.id != "selection-container" ){
+        if (event.target.id != "selection-container") {
 
             if (event.target.className === "") {
                 event.target.className = "selected"
                 //adding the selected card Object to the array Selection by finding in the array allCardsWithImages which
                 //element shares the same name
                 selection.push(allCardsWithImages.find(element => element.name === event.target.id))
-    
+
             } else if (event.target.className === "selected") {
-    
+
                 let indexOfCard = selection.indexOf(allCardsWithImages.find(element => element.name === event.target.id))
-    
+
                 if (indexOfCard > -1) {
                     selection.splice(indexOfCard, 1);
-    
+
                 }
-    
+
                 event.target.className = ""
-    
-    
+
+
             }
         } else {
 
@@ -173,18 +173,18 @@ document.addEventListener('DOMContentLoaded', (event) => {
         let selectedFilter = filterByDropDown.value
         filteredSelection.splice(0, filteredSelection.length)
 
-        if(selectedFilter === "None"){
+        if (selectedFilter === "None") {
             console.log("no filter")
             displayImages(allCardsWithImages)
-            
+
 
         } else {
 
 
             filteredSelection = allCardsWithImages.filter((array) => {
-    
+
                 return array.types[0] === selectedFilter
-    
+
             })
             displayImages(filteredSelection)
             // debugger
@@ -303,10 +303,3 @@ document.addEventListener('DOMContentLoaded', (event) => {
 })
 
 
-/* NOTES
-
-to search by name inside of specific color:
-https://api.magicthegathering.io/v1/cards?colors=red&name=rat
-
-
-*/
