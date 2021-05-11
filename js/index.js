@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const buttonNext = document.querySelector("button#next-page")
     const allCardsWithImages = []
     let selection = []
-    let filteredSelection = []
+
 
 
 
@@ -55,9 +55,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
             })
             .then((data) => {
                 const arrayOfCards = data.cards
-                const cardNames = arrayOfCards.map(e => {
-                    return e.name
-                })
                 console.log(arrayOfCards)
                 containerImages.innerHTML = ""
                 displayImages(arrayOfCards)
@@ -83,7 +80,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
         //it's given an array of cards and it returns an array with the image path of each element, if there is no
         //photo available it sends a Message
 
-        const arrayOfImages = arrayOfCards.map(e => {
+        // allCardsWithImages.splice(0,allCardsWithImages.length)
+        arrayOfCards.map(e => {
             if (e.imageUrl !== undefined) {
                 const createImages = document.createElement('img')
                 createImages.src = e.imageUrl;
@@ -91,7 +89,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 createImages.className = "";
                 containerImages.append(createImages)
                 allCardsWithImages.push(e)
-                return e.imageUrl
+
             } else {
                 return "NO IMAGE AVAILABLE"
             }
@@ -104,7 +102,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         containerImages.style.visibility = "hidden";
         buttonShowAll.style.visibility = "visible";
         buttonClearSelection.style.visibility = "visible";
-        buttonSelects.style.visibility = "visible";
+        buttonSelects.style.visibility = "hidden";
         filterBy.style.visibility = "visible"
 
 
@@ -170,8 +168,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
         containerImages.innerHTML = ""
 
 
+
         let selectedFilter = filterByDropDown.value
-        filteredSelection.splice(0, filteredSelection.length)
+
 
         if (selectedFilter === "None") {
             console.log("no filter")
@@ -181,14 +180,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
         } else {
 
 
-            filteredSelection = allCardsWithImages.filter((array) => {
+            let filteredSelection = allCardsWithImages.filter((cardObject) => {
 
-                return array.types[0] === selectedFilter
+                return cardObject.types[0] === selectedFilter
 
             })
             displayImages(filteredSelection)
             // debugger
-            filteredSelection.splice(0, filteredSelection.length)
+
         }
 
 
@@ -197,6 +196,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
     function fetchDataByName(event) {
         event.preventDefault()
         filterBy.style.visibility = "visible"
+        buttonShowAll.disabled = false
+        buttonClearSelection.disabled = false
+        buttonSelects.disabled = false
+        filterButton.disabled = false
+        filterDrop.disabled = false
 
 
         fetch(`https://api.magicthegathering.io/v1/cards?name=${name.value}`)
@@ -232,6 +236,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     function showAll(event) {
         buttonShowAll.style.visibility = "hidden";
         buttonClearSelection.style.visibility = "hidden";
+        buttonSelects.style.visibility = "visible";
         containerImages.style.visibility = "visible";
         clickingInsideSelection.innerHTML = ""
         nameButton.disabled = false
@@ -241,6 +246,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
         filterDrop.disabled = false
         filterButton.disabled = false
 
+        displayImages(arrayOfCards)
+
+
 
 
 
@@ -249,6 +257,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     function colorSelect(event) {
         event.preventDefault()
+        allCardsWithImages.splice(0,allCardsWithImages.length)
 
         switch (dropDownStatus.value) {
             case "white":
