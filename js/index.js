@@ -97,58 +97,61 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 
     }
-    function displaySelected(event) {
+
+
+    function displaySelected(event){
+
+        
+
         clickingInsideSelection.innerHTML = ""
         containerImages.style.visibility = "hidden";
         buttonShowAll.style.visibility = "visible";
         buttonClearSelection.style.visibility = "visible";
         buttonSelects.style.visibility = "hidden";
         filterBy.style.visibility = "visible"
-
-
-        selection.forEach(e => {
-            const createImages = document.createElement('img')
-            createImages.src = e.imageUrl;
-            createImages.id = e.name;
-            createImages.className = "selected";
-            clickingInsideSelection.append(createImages)
-        });
         nameButton.disabled = true
         name.disabled = true
         dropDownStatus.disabled = true
         colorButton.disabled = true
         filterDrop.disabled = true
         filterButton.disabled = true
+        let selectedImages = allCardsWithImages.filter(element => element.selected === "yes")
+        console.log(selectedImages)
 
 
-
-
-
-
+        selectedImages.forEach(e => {
+            const createImages = document.createElement('img')
+            createImages.src = e.imageUrl;
+            createImages.id = e.name;
+            createImages.className = "selected";
+            clickingInsideSelection.append(createImages)
+        });
 
 
     }
 
 
     function selectCard(event) {
+        
 
         if (event.target.id != "selection-container") {
 
             if (event.target.className === "") {
                 event.target.className = "selected"
-                //adding the selected card Object to the array Selection by finding in the array allCardsWithImages which
-                //element shares the same name
-                selection.push(allCardsWithImages.find(element => element.name === event.target.id))
+
+                
+                let temporarySelectedCard = allCardsWithImages.find(element => element.name === event.target.id)
+                temporarySelectedCard.selected = "yes"
+                console.log(temporarySelectedCard)
+
+
 
             } else if (event.target.className === "selected") {
 
-                let indexOfCard = selection.indexOf(allCardsWithImages.find(element => element.name === event.target.id))
 
-                if (indexOfCard > -1) {
-                    selection.splice(indexOfCard, 1);
-
-                }
-
+                let temporarySelectedCard = allCardsWithImages.find(element => element.name === event.target.id)
+                temporarySelectedCard.selected = "no"
+                console.log(temporarySelectedCard)
                 event.target.className = ""
 
 
@@ -156,6 +159,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         } else {
 
         }
+
     }
 
 
@@ -186,7 +190,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
             })
             displayImages(filteredSelection)
-            // debugger
+
 
         }
 
@@ -246,7 +250,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         filterDrop.disabled = false
         filterButton.disabled = false
 
-        displayImages(arrayOfCards)
+        displayImages()
 
 
 
