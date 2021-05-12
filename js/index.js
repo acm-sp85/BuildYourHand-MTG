@@ -24,7 +24,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const buttonPrevious = document.querySelector("button#previous-page")
     const buttonNext = document.querySelector("button#next-page")
     const allCardsWithImages = []
-    let selection = []
+    const searchNames = []
+    let selectedImages = []
 
 
 
@@ -34,74 +35,120 @@ document.addEventListener('DOMContentLoaded', (event) => {
     filterBy.addEventListener('submit', (event) => filterArray(event))
     containerImages.addEventListener('click', (event) => selectCard(event))
     clickingInsideSelection.addEventListener('click', (event) => selectCard(event))
-    buttonClearSelection.addEventListener('click', (event) => clearSelection(event))
     clickingSelect.addEventListener('click', (event) => displaySelected(event))
+    buttonClearSelection.addEventListener('click', (event) => clearSelection(event))
     clickingGoBack.addEventListener('click', (event) => showAll(event))
     searchByName.addEventListener('submit', (event) => fetchDataByName(event))
     buttonPrevious.addEventListener('click', () => previousPage(event))
     buttonNext.addEventListener('click', () => nextPage(event))
 
-
+    
     //FUNCTIONS
-
+    
     const fetchData = (color) => {
-
+        
         fetch(`https://api.magicthegathering.io/v1/cards?colors=${color}&page=${pageCounter}`)
-
-            .then((result) => {
-
-                return result.json()
-
-            })
-            .then((data) => {
-                const arrayOfCards = data.cards
-                console.log(arrayOfCards)
-                containerImages.innerHTML = ""
-                displayImages(arrayOfCards)
-            })
-
+        
+        .then((result) => {
+            
+            return result.json()
+            
+        })
+        .then((data) => {
+            const arrayOfCards = data.cards
+            console.log(arrayOfCards)
+            containerImages.innerHTML = ""
+            createSelectionOfCardsWithImages(arrayOfCards)
+        })
+        
     }
     function nextPage(event) {
         pageCounter++
         console.log("next page")
+        allCardsWithImages.splice(0,allCardsWithImages.length)
         fetchData(currentColor)
     }
     function previousPage(event) {
         pageCounter--
         console.log("prev page")
+        allCardsWithImages.splice(0,allCardsWithImages.length)
         fetchData(currentColor)
+    }
+    
+    function fetchDataByName(event) {
+        event.preventDefault()
+        filterBy.style.visibility = "visible"
+        buttonShowAll.disabled = false
+        buttonClearSelection.disabled = false
+        buttonSelects.disabled = false
+        filterButton.disabled = false
+        filterDrop.disabled = false
+        containerImages.innerHTML = ""
+        clickingInsideSelection.innerHTML=""
+        searchNames.splice(0,searchNames.length)
+
+
+
+        fetch(`https://api.magicthegathering.io/v1/cards?name=${name.value}`)
+            .then(result => result.json())
+            .then(data => {
+
+                const arrayOfCards = data.cards
+                const cardNames = arrayOfCards.map(e => {
+                    return e.name
+                })
+
+                arrayOfCards.map(e => {
+                    if (e.imageUrl !== undefined) {
+                        searchNames.push(e)
+                    } else {
+                        return "NO IMAGE AVAILABLE"
+                    }
+                })
+                displayImages(searchNames,containerImages)
+        
+
+            })
     }
 
 
 
+    function createSelectionOfCardsWithImages(arrayOfCards) {
 
-
-    function displayImages(arrayOfCards) {
-        //it's given an array of cards and it returns an array with the image path of each element, if there is no
-        //photo available it sends a Message
-
-        // allCardsWithImages.splice(0,allCardsWithImages.length)
         arrayOfCards.map(e => {
             if (e.imageUrl !== undefined) {
-                const createImages = document.createElement('img')
-                createImages.src = e.imageUrl;
-                createImages.id = e.name;
-                createImages.className = "";
-                containerImages.append(createImages)
                 allCardsWithImages.push(e)
-
             } else {
                 return "NO IMAGE AVAILABLE"
             }
         })
+        displayImages(allCardsWithImages,containerImages)
 
 
     }
 
 
-    function displaySelected(event){
+    function displayImages(array,whereToDisplay) {
 
-        
+        whereToDisplay.innerHTML=""
+        array.forEach(e => {
+
+            const createImages = document.createElement('img')
+            createImages.src = e.imageUrl;
+            createImages.id = e.name;
+            createImages.className = "";
+            whereToDisplay.append(createImages)
+
+
+        });
+
+
+    }
+
+
+    function displaySelected(event) {
+
+
 
         clickingInsideSelection.innerHTML = ""
         containerImages.style.visibility = "hidden";
@@ -115,44 +162,39 @@ document.addEventListener('DOMContentLoaded', (event) => {
         colorButton.disabled = true
         filterDrop.disabled = true
         filterButton.disabled = true
-        let selectedImages = allCardsWithImages.filter(element => element.selected === "yes")
+
+        // selectedImages.splice(0,selectedImages.length)
+        // selectedImages = allCardsWithImages.filter(element => element.selected === "yes")
         console.log(selectedImages)
 
-
-        selectedImages.forEach(e => {
-            const createImages = document.createElement('img')
-            createImages.src = e.imageUrl;
-            createImages.id = e.name;
-            createImages.className = "selected";
-            clickingInsideSelection.append(createImages)
-        });
-
-
+        displayImages(selectedImages,clickingInsideSelection)
     }
 
 
     function selectCard(event) {
-        
+
 
         if (event.target.id != "selection-container") {
 
             if (event.target.className === "") {
                 event.target.className = "selected"
 
-                
-                let temporarySelectedCard = allCardsWithImages.find(element => element.name === event.target.id)
-                temporarySelectedCard.selected = "yes"
-                console.log(temporarySelectedCard)
+
+                allCardsWithImages.find(element => element.name === event.target.id).selected = "yes"
+                selectedImages = allCardsWithImages.filter(element => element.selected === "yes")
+
+                console.log(allCardsWithImages)
 
 
 
             } else if (event.target.className === "selected") {
 
 
-                let temporarySelectedCard = allCardsWithImages.find(element => element.name === event.target.id)
-                temporarySelectedCard.selected = "no"
-                console.log(temporarySelectedCard)
                 event.target.className = ""
+                allCardsWithImages.find(element => element.name === event.target.id).selected = "no"
+                selectedImages.pop()
+
+                console.log(allCardsWithImages)
 
 
             }
@@ -178,7 +220,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
         if (selectedFilter === "None") {
             console.log("no filter")
-            displayImages(allCardsWithImages)
+            displayImages(allCardsWithImages, containerImages)
 
 
         } else {
@@ -189,7 +231,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 return cardObject.types[0] === selectedFilter
 
             })
-            displayImages(filteredSelection)
+            displayImages(filteredSelection,containerImages)
 
 
         }
@@ -197,30 +239,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     }
 
-    function fetchDataByName(event) {
-        event.preventDefault()
-        filterBy.style.visibility = "visible"
-        buttonShowAll.disabled = false
-        buttonClearSelection.disabled = false
-        buttonSelects.disabled = false
-        filterButton.disabled = false
-        filterDrop.disabled = false
-
-
-        fetch(`https://api.magicthegathering.io/v1/cards?name=${name.value}`)
-            .then(result => result.json())
-            .then(data => {
-                console.log(data)
-                const arrayOfCards = data.cards
-                console.log(data)
-                const cardNames = arrayOfCards.map(e => {
-                    return e.name
-                })
-                containerImages.innerHTML = ""
-
-                displayImages(arrayOfCards)
-            })
-    }
 
 
 
@@ -249,8 +267,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         colorButton.disabled = false
         filterDrop.disabled = false
         filterButton.disabled = false
-
-        displayImages()
+        displayImages(allCardsWithImages,containerImages)
 
 
 
@@ -261,7 +278,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     function colorSelect(event) {
         event.preventDefault()
-        allCardsWithImages.splice(0,allCardsWithImages.length)
+        allCardsWithImages.splice(0, allCardsWithImages.length)
 
         switch (dropDownStatus.value) {
             case "white":
