@@ -37,7 +37,7 @@
      </div>   
     <form id="filter-by" action="" style="visibility: visible;" >
         <p>Filter by</p>
-        <select name="filter-drop-down" id="filter" class="filter-selected" disabled="true">
+        <select name="filter-drop-down" id="filter" class="filter-selected" ">
             <option value="" attribute=""></option>
             <option value="None">None</option>
             <option value="Artifact">Artifact</option>
@@ -46,15 +46,15 @@
             <option value="Instant">Instant</option>
             <option value="Land">Land</option>
         </select>
-        <input type="submit" value="filter" disabled="true" id="filter-button">
+        <input type="submit" value="filter" id="filter-button">
         
         
         
     </form>
-    <button id="selects" style="visibility: visible" disabled="true">GO TO YOUR SELECTION</button>
+    <button id="selects" style="visibility: visible" >GO TO YOUR SELECTION</button>
     <br>
-    <button id="clear-selection" disabled="true" style="visibility: hidden">CLEAR SELECTION</button>
-    <button id="go-to-main" disabled="true" style="visibility: hidden">SHOW ALL</button>
+    <button id="clear-selection"  >CLEAR SELECTION</button>
+    <button id="go-to-main"  >SHOW ALL</button>
     <div id="selection-container">
 
         <ul class="card-selection-list"></ul>
@@ -64,7 +64,7 @@
     <button id="previous-page"> < </button>
     <button id="next-page"> > </button>
     
-    <div id="images-container" class="images-container"></div>
+    <div id="images-container" class="images-container" style="visibility: visible;"></div>
 
         
 
