@@ -22,12 +22,18 @@ img {
     object-fit: cover;
     margin: 2px;
     max-height: 300px;
+    border-radius: 10px;
+    
+
 }
 
 .selected {
-    border: 3px solid green;
+    border: 3px solid rgb(0, 128, 0);
+    border-radius: 10px;
     border-block-color: green;
-    box-shadow: 5px 5px 5px rgb(34, 34, 34);
+    box-shadow: 5px 5px 5px rgba(8, 248, 8, 0.112);
+    margin: -1px;
+
     
     
 }

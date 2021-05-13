@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const buttonPrevious = document.querySelector("button#previous-page")
     const buttonNext = document.querySelector("button#next-page")
     const allCardsWithImages = []
-    const searchNames = []
+    // const searchNames = []
     let selectedImages = []
 
 
@@ -80,7 +80,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
         containerImages.innerHTML = ""
         clickingInsideSelection.innerHTML = ""
-        searchNames.splice(0, searchNames.length)
+        // searchNames.splice(0, searchNames.length)
+
 
 
 
@@ -95,12 +96,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
                 arrayOfCards.map(e => {
                     if (e.imageUrl !== undefined) {
-                        searchNames.push(e)
+                        allCardsWithImages.push(e)
                     } else {
                         return "NO IMAGE AVAILABLE"
                     }
                 })
-                displayImages(searchNames, containerImages)
+                displayImages(allCardsWithImages, containerImages)
 
 
             })
@@ -131,7 +132,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
             const createImages = document.createElement('img')
             createImages.src = e.imageUrl;
             createImages.id = e.name;
-            createImages.className = "";
+            if(e.selected === "yes"){
+                createImages.className = "selected";
+
+            } else {
+                createImages.className = "";
+
+            }
             whereToDisplay.append(createImages)
 
 
@@ -164,9 +171,16 @@ document.addEventListener('DOMContentLoaded', (event) => {
             if (event.target.className === "") {
                 event.target.className = "selected"
 
+                //actually adding a key in the card object called selected and giving it the value "yes"
+                allCardsWithImages.find(card => card.name === event.target.id).selected = "yes"
 
-                allCardsWithImages.find(element => element.name === event.target.id).selected = "yes"
-                selectedImages = allCardsWithImages.filter(element => element.selected === "yes")
+                allCardsWithImages.forEach(card => {
+                    if(card.selected === "yes" && !selectedImages.includes(card)){
+                        selectedImages.push(card)
+                    }
+                    
+                });
+                console.log(selectedImages)
 
 
             } else if (event.target.className === "selected") {
@@ -192,6 +206,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
     function clearSelection(event) {
         console.log("clear")
 
+        allCardsWithImages.forEach(card => {
+
+            card.selected = ""
+            
+        });
         const classSelected = document.querySelectorAll(".selected");
         for (i = 0; i < classSelected.length; i++) {
             classSelected[i].className = "";
