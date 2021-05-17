@@ -64,12 +64,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
         fetchData(currentColor)
     }
     function previousPage(event) {
-        
+
         const previousButton = document.getElementById('previous-page')
-        
-        if(pageCounter === 2){
-            
-            
+
+        if (pageCounter === 2) {
+
+
             pageCounter--
             previousButton.style.visibility = "hidden"
             console.log("prev page")
@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         event.preventDefault()
         const name = document.querySelector('[name="name"]')
 
-        
+
 
         containerImages.innerHTML = ""
         clickingInsideSelection.innerHTML = ""
@@ -306,11 +306,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
     function colorSelect(event) {
         const dropDownStatus = document.getElementById("color")
         const nextButton = document.getElementById('next-page')
+        const pTest = document.getElementById('testParagraph')
 
-        
+
         event.preventDefault()
         allCardsWithImages.splice(0, allCardsWithImages.length)
         containerImages.style.visibility = "visible"
+        nextButton.style.visibility = "visible"
+
         clickingInsideSelection.innerHTML = ""
 
 
@@ -346,9 +349,20 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 break
 
         }
-        nextButton.style.visibility = "visible"
 
 
+
+    }
+
+
+    function visibilitySwitch(whatToSwitch) {
+
+        console.log(whatToSwitch.style.visibility)
+        if (whatToSwitch.style.visibility === "hidden") {
+            whatToSwitch.style.visibility = "visible"
+        } else {
+            whatToSwitch.style.visibility = "hidden"
+        }
     }
 })
 
