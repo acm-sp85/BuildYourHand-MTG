@@ -1,30 +1,23 @@
 //Starting effectively by page 2 cause some of the first pages of the API are repeated...
 let pageCounter = 1
 let currentColor
+const allCardsWithImages = []
+let selectedImages = []
+
+
 document.addEventListener('DOMContentLoaded', (event) => {
 
 
     const selectColor = document.getElementById("create-task-form")
     const filterBy = document.getElementById("filter-by")
-    const filterByDropDown = document.getElementById("filter")
-    const filterButton = document.getElementById("filter-button")
-    const dropDownStatus = document.getElementById("color")
     const clickingSelect = document.getElementById("selects")
     const clickingGoBack = document.getElementById("go-to-main")
     const clickingInsideSelection = document.getElementById("selection-container")
     const containerImages = document.getElementById('images-container')
-    const name = document.querySelector('[name="name"]')
-    const nameButton = document.querySelector('input[name="submit"]')
-    const filterDrop = document.querySelector('.filter-selected')
     const searchByName = document.querySelector(".search-card-form")
     const buttonClearSelection = document.getElementById("clear-selection")
-    const buttonShowAll = document.querySelector("button#go-to-main")
-    const colorButton = document.querySelector('input[name="color-button"]')
-    const buttonSelects = document.querySelector("button#selects")
     const buttonPrevious = document.querySelector("button#previous-page")
     const buttonNext = document.querySelector("button#next-page")
-    const allCardsWithImages = []
-    let selectedImages = []
 
 
 
@@ -69,14 +62,29 @@ document.addEventListener('DOMContentLoaded', (event) => {
         fetchData(currentColor)
     }
     function previousPage(event) {
-        pageCounter--
-        console.log("prev page")
-        allCardsWithImages.splice(0, allCardsWithImages.length)
-        fetchData(currentColor)
+
+        const previousButton = document.getElementById('previous.page')
+
+        if(pageCounter === 1){
+
+            pageCounter--
+            console.log("prev page")
+            allCardsWithImages.splice(0, allCardsWithImages.length)
+            fetchData(currentColor)
+        } else {
+            
+            pageCounter--
+            console.log("prev page")
+            allCardsWithImages.splice(0, allCardsWithImages.length)
+            fetchData(currentColor)
+        }
     }
 
     function fetchDataByName(event) {
         event.preventDefault()
+        const name = document.querySelector('[name="name"]')
+
+        
 
         containerImages.innerHTML = ""
         clickingInsideSelection.innerHTML = ""
@@ -240,6 +248,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 
     function filterArray(event) {
+        const filterByDropDown = document.getElementById("filter")
+
         event.preventDefault()
 
         containerImages.innerHTML = ""
@@ -291,6 +301,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
 
     function colorSelect(event) {
+        const dropDownStatus = document.getElementById("color")
+
+        
         event.preventDefault()
         allCardsWithImages.splice(0, allCardsWithImages.length)
         containerImages.style.visibility = "visible"
