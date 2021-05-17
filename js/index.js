@@ -24,7 +24,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const buttonPrevious = document.querySelector("button#previous-page")
     const buttonNext = document.querySelector("button#next-page")
     const allCardsWithImages = []
-    // const searchNames = []
     let selectedImages = []
 
 
@@ -164,43 +163,67 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
         if (event.target.id != "selection-container") {
 
-            if (event.target.className === "") {
-                event.target.className = "selected"
+            if (selectedImages.length <= 59) {
 
-                //actually adding a key in the card object called selected and giving it the value "yes"
-                allCardsWithImages.find(card => card.name === event.target.id).selected = "yes"
+                if (event.target.className === "") {
+                    event.target.className = "selected"
 
-                allCardsWithImages.forEach(card => {
-                    if (card.selected === "yes" && !selectedImages.includes(card)) {
-                        selectedImages.push(card)
+                    //updates Selection Button
+                    clickingSelect.innerText = `GO TO YOUR SELECTION ${selectedImages.length + 1}/60`
+
+                    //actually adding a key in the card object called selected and giving it the value "yes"
+                    allCardsWithImages.find(card => card.name === event.target.id).selected = "yes"
+
+                    allCardsWithImages.forEach(card => {
+                        if (card.selected === "yes" && !selectedImages.includes(card)) {
+                            selectedImages.push(card)
+                        }
+
+                    });
+                    console.log(selectedImages)
+
+
+                } else if (event.target.className === "selected") {
+
+                    //updates Selection Button
+                    clickingSelect.innerText = `GO TO YOUR SELECTION ${selectedImages.length - 1}/60`
+                    event.target.className = ""
+                    allCardsWithImages.find(card => card.name === event.target.id).selected = "no"
+                    let indexOfCard = selectedImages.indexOf(allCardsWithImages.find(element => element.name === event.target.id))
+
+                    if (indexOfCard > -1) {
+                        selectedImages.splice(indexOfCard, 1);
+
                     }
-
-                });
-                console.log(selectedImages)
-
-
-            } else if (event.target.className === "selected") {
-
-
-                event.target.className = ""
-                allCardsWithImages.find(card => card.name === event.target.id).selected = "no"
-                let indexOfCard = selectedImages.indexOf(allCardsWithImages.find(element => element.name === event.target.id))
-
-                if (indexOfCard > -1) {
-                    selectedImages.splice(indexOfCard, 1);
 
                 }
 
+            } else {
+
+                if (event.target.className === "selected") {
+                    //updates Selection Button
+                    clickingSelect.innerText = `GO TO YOUR SELECTION ${selectedImages.length - 1}/60`
+                    event.target.className = ""
+                    allCardsWithImages.find(card => card.name === event.target.id).selected = "no"
+                    let indexOfCard = selectedImages.indexOf(allCardsWithImages.find(element => element.name === event.target.id))
+
+                    if (indexOfCard > -1) {
+                        selectedImages.splice(indexOfCard, 1);
+
+                    }
+                } else {
+                    window.alert("Your deck is already 60 cards.")
+
+                }
             }
-        } else {
 
         }
-
     }
 
     function clearSelection(event) {
         console.log("clear")
 
+        clickingSelect.innerText = `GO TO YOUR SELECTION`
         allCardsWithImages.forEach(card => {
 
             card.selected = ""
