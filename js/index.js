@@ -57,22 +57,25 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
     function nextPage(event) {
         pageCounter++
+        const previousButton = document.getElementById('previous-page')
+        previousButton.style.visibility = "visible"
         console.log("next page")
         allCardsWithImages.splice(0, allCardsWithImages.length)
         fetchData(currentColor)
     }
     function previousPage(event) {
-
-        const previousButton = document.getElementById('previous.page')
-
-        if(pageCounter === 1){
-
+        
+        const previousButton = document.getElementById('previous-page')
+        
+        if(pageCounter === 2){
+            
+            
             pageCounter--
+            previousButton.style.visibility = "hidden"
             console.log("prev page")
             allCardsWithImages.splice(0, allCardsWithImages.length)
             fetchData(currentColor)
         } else {
-            
             pageCounter--
             console.log("prev page")
             allCardsWithImages.splice(0, allCardsWithImages.length)
@@ -302,6 +305,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     function colorSelect(event) {
         const dropDownStatus = document.getElementById("color")
+        const nextButton = document.getElementById('next-page')
 
         
         event.preventDefault()
@@ -342,6 +346,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 break
 
         }
+        nextButton.style.visibility = "visible"
 
 
     }
