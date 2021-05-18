@@ -1,5 +1,3 @@
-
-//Starting effectively by page 2 cause some of the first pages of the API are repeated...
 let pageCounter = 1
 let currentColor
 const allCardsWithImages = []
@@ -83,10 +81,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 const arrayOfCards = data.cards
                 containerImages.innerHTML = ""
                 createSelectionOfCardsWithImages(arrayOfCards)
+                displayImages(allCardsWithImages, containerImages)
+                console.log(allCardsWithImages)
             })
     }
-    fetchDataByName = event => {
-        event.preventDefault()
+
+    fetchDataByName = cardName => {
+        cardName.preventDefault()
         const name = document.querySelector('[name="name"]')
         containerImages.innerHTML = ""
         clickingInsideSelection.innerHTML = ""
@@ -95,39 +96,36 @@ document.addEventListener('DOMContentLoaded', (event) => {
             .then(result => result.json())
             .then(data => {
                 const arrayOfCards = data.cards
-                const cardNames = arrayOfCards.map(e => {
-                    return e.name
-                })
+                arrayOfCards.map(e => e.name)
                 allCardsWithImages.splice(0, allCardsWithImages.length)
                 arrayOfCards.map(e => {
                     if (e.imageUrl !== undefined) {
                         allCardsWithImages.push(e)
-                    } else {
-                        return "NO IMAGE AVAILABLE"
                     }
                 })
                 visibilityOn(containerImages)
+                visibilityOn(clickingSelect)
                 clickingInsideSelection.innerHTML = ""
                 displayImages(allCardsWithImages, containerImages)
             })
     }
+
     createSelectionOfCardsWithImages = arrayOfCards => {
 
-        arrayOfCards.map(e => {
-            if (e.imageUrl !== undefined) {
-                allCardsWithImages.push(e)
-            } else {
-                return "NO IMAGE AVAILABLE"
-            }
+        arrayOfCards.map(card => {
+            if (card.imageUrl !== undefined) {
+                allCardsWithImages.push(card)
+            } 
         })
-        displayImages(allCardsWithImages, containerImages)
     }
+
     displayImages = (array, whereToDisplay) => {
         whereToDisplay.innerHTML = ""
         array.forEach(e => {
             const createImages = document.createElement('img')
             createImages.src = e.imageUrl;
-            createImages.id = e.name;
+            createImages.id = e.id;
+            createImages.name = e.set;
             if (e.selected === "yes") {
                 createImages.className = "selected";
             } else {
@@ -167,7 +165,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     clickingSelect.innerText = `GO TO YOUR SELECTION ${selectedImages.length + 1}/60`
 
                     //actually adding a key in the card object called selected and giving it the value "yes"
-                    allCardsWithImages.find(card => card.name === event.target.id).selected = "yes"
+                    allCardsWithImages.find(card => card.id === event.target.id).selected = "yes"
 
                     allCardsWithImages.forEach(card => {
                         if (card.selected === "yes" && !selectedImages.includes(card)) {
@@ -183,8 +181,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     //updates Selection Button
                     clickingSelect.innerText = `GO TO YOUR SELECTION ${selectedImages.length - 1}/60`
                     event.target.className = ""
-                    allCardsWithImages.find(card => card.name === event.target.id).selected = "no"
-                    let indexOfCard = selectedImages.indexOf(allCardsWithImages.find(element => element.name === event.target.id))
+                    allCardsWithImages.find(card => card.id === event.target.id).selected = "no"
+                    let indexOfCard = selectedImages.indexOf(allCardsWithImages.find(element => element.id === event.target.id))
 
                     if (indexOfCard > -1) {
                         selectedImages.splice(indexOfCard, 1);
@@ -199,8 +197,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     //updates Selection Button
                     clickingSelect.innerText = `GO TO YOUR SELECTION ${selectedImages.length - 1}/60`
                     event.target.className = ""
-                    allCardsWithImages.find(card => card.name === event.target.id).selected = "no"
-                    let indexOfCard = selectedImages.indexOf(allCardsWithImages.find(element => element.name === event.target.id))
+                    allCardsWithImages.find(card => card.id === event.target.id).selected = "no"
+                    let indexOfCard = selectedImages.indexOf(allCardsWithImages.find(element => element.id === event.target.id))
 
                     if (indexOfCard > -1) {
                         selectedImages.splice(indexOfCard, 1);
