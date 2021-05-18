@@ -1,108 +1,103 @@
+
 //Starting effectively by page 2 cause some of the first pages of the API are repeated...
 let pageCounter = 1
 let currentColor
 const allCardsWithImages = []
 let selectedImages = []
 
-
 document.addEventListener('DOMContentLoaded', (event) => {
-
-
     const selectColor = document.getElementById("create-task-form")
+    const searchByName = document.querySelector(".search-card-form")
     const filterBy = document.getElementById("filter-by")
+    const containerImages = document.getElementById('images-container')
+    const clickingInsideSelection = document.getElementById("selection-container")
     const clickingSelect = document.getElementById("selects")
     const clickingGoBack = document.getElementById("go-to-main")
-    const clickingInsideSelection = document.getElementById("selection-container")
-    const containerImages = document.getElementById('images-container')
-    const searchByName = document.querySelector(".search-card-form")
     const buttonClearSelection = document.getElementById("clear-selection")
     const buttonPrevious = document.querySelector("button#previous-page")
     const buttonNext = document.querySelector("button#next-page")
-
-
-
-
     //EVENT LISTENERS
     selectColor.addEventListener('submit', event => colorSelect(event))
+    searchByName.addEventListener('submit', (event) => fetchDataByName(event))
     filterBy.addEventListener('submit', (event) => filterArray(event))
     containerImages.addEventListener('click', (event) => selectCard(event))
     clickingInsideSelection.addEventListener('click', (event) => selectCard(event))
     clickingSelect.addEventListener('click', (event) => displaySelected(event))
-    buttonClearSelection.addEventListener('click', (event) => clearSelection(event))
     clickingGoBack.addEventListener('click', (event) => showAll(event))
-    searchByName.addEventListener('submit', (event) => fetchDataByName(event))
+    buttonClearSelection.addEventListener('click', (event) => clearSelection(event))
     buttonPrevious.addEventListener('click', () => previousPage(event))
     buttonNext.addEventListener('click', () => nextPage(event))
-
-
-
-
     //FUNCTIONS
+    visibilityOn = makeVisible => makeVisible.style.visibility = "visible"
+    visibilityOff = hide => hide.style.visibility = "hidden"
 
-    const fetchData = (color) => {
+    colorSelect = event => {
+        const dropDownStatus = document.getElementById("color")
+        const nextButton = document.getElementById('next-page')
+        event.preventDefault()
+        allCardsWithImages.splice(0, allCardsWithImages.length)
+        visibilityOn(containerImages)
+        visibilityOn(nextButton)
+        visibilityOn(clickingSelect)
+        visibilityOn(filterBy)
+        clickingInsideSelection.innerHTML = ""
 
+        switch (dropDownStatus.value) {
+            case "white":
+                console.log("We selected white")
+                currentColor = "white"
+                fetchData("white")
+                break
+
+            case "blue":
+                console.log("We selected blue")
+                currentColor = "blue"
+                fetchData("blue")
+                break
+
+            case "red":
+                console.log("We selected red")
+                currentColor = "red"
+                fetchData("red")
+                break
+
+            case "green":
+                console.log("We selected green")
+                currentColor = "green"
+                fetchData("green")
+                break
+
+            case "black":
+                console.log("We selected black")
+                currentColor = "black"
+                fetchData("black")
+                break
+
+        }
+
+    }
+    fetchData = color => {
         fetch(`https://api.magicthegathering.io/v1/cards?colors=${color}&page=${pageCounter}`)
-
-            .then((result) => {
-
-                return result.json()
-
-            })
+            .then((result) => result.json())
             .then((data) => {
                 const arrayOfCards = data.cards
-                console.log(arrayOfCards)
                 containerImages.innerHTML = ""
                 createSelectionOfCardsWithImages(arrayOfCards)
-
             })
-
     }
-    function nextPage(event) {
-        pageCounter++
-        const previousButton = document.getElementById('previous-page')
-        previousButton.style.visibility = "visible"
-        console.log("next page")
-        allCardsWithImages.splice(0, allCardsWithImages.length)
-        fetchData(currentColor)
-    }
-    function previousPage(event) {
-
-        const previousButton = document.getElementById('previous-page')
-
-        if (pageCounter === 2) {
-
-
-            pageCounter--
-            previousButton.style.visibility = "hidden"
-            console.log("prev page")
-            allCardsWithImages.splice(0, allCardsWithImages.length)
-            fetchData(currentColor)
-        } else {
-            pageCounter--
-            console.log("prev page")
-            allCardsWithImages.splice(0, allCardsWithImages.length)
-            fetchData(currentColor)
-        }
-    }
-
-    function fetchDataByName(event) {
+    fetchDataByName = event => {
         event.preventDefault()
         const name = document.querySelector('[name="name"]')
-
-
-
         containerImages.innerHTML = ""
         clickingInsideSelection.innerHTML = ""
 
         fetch(`https://api.magicthegathering.io/v1/cards?name=${name.value}`)
             .then(result => result.json())
             .then(data => {
-
                 const arrayOfCards = data.cards
                 const cardNames = arrayOfCards.map(e => {
                     return e.name
                 })
-
                 allCardsWithImages.splice(0, allCardsWithImages.length)
                 arrayOfCards.map(e => {
                     if (e.imageUrl !== undefined) {
@@ -111,17 +106,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
                         return "NO IMAGE AVAILABLE"
                     }
                 })
-                containerImages.style.visibility = "visible"
+                visibilityOn(containerImages)
                 clickingInsideSelection.innerHTML = ""
                 displayImages(allCardsWithImages, containerImages)
-
-
             })
     }
-
-
-
-    function createSelectionOfCardsWithImages(arrayOfCards) {
+    createSelectionOfCardsWithImages = arrayOfCards => {
 
         arrayOfCards.map(e => {
             if (e.imageUrl !== undefined) {
@@ -131,16 +121,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
             }
         })
         displayImages(allCardsWithImages, containerImages)
-
-
     }
-
-
-    function displayImages(array, whereToDisplay) {
-
+    displayImages = (array, whereToDisplay) => {
         whereToDisplay.innerHTML = ""
         array.forEach(e => {
-
             const createImages = document.createElement('img')
             createImages.src = e.imageUrl;
             createImages.id = e.name;
@@ -150,33 +134,28 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 createImages.className = "";
             }
             whereToDisplay.append(createImages)
-
-
         });
-
-
     }
-
-
-    function displaySelected(event) {
-
+    displaySelected = () => {
         visibilityOn(clickingGoBack)
         visibilityOn(buttonClearSelection)
         visibilityOn(clickingInsideSelection)
         visibilityOff(containerImages)
-
-
-
+        visibilityOff(filterBy)
         clickingInsideSelection.innerHTML = ""
-        console.log(selectedImages)
-
         displayImages(selectedImages, clickingInsideSelection)
     }
-
-
-    function selectCard(event) {
-
-
+    clearSelection = () => {
+        clickingSelect.innerText = `GO TO YOUR SELECTION`
+        allCardsWithImages.forEach(card => card.selected = "");
+        const classSelected = document.querySelectorAll(".selected");
+        for (i = 0; i < classSelected.length; i++) {
+            classSelected[i].className = "";
+        }
+        clickingInsideSelection.innerHTML = ""
+        selectedImages = []
+    }
+    selectCard = event => {
         if (event.target.id != "selection-container") {
 
             if (selectedImages.length <= 59) {
@@ -232,168 +211,64 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
                 }
             }
-
         }
     }
-
-    function clearSelection(event) {
-        console.log("clear")
-
-        clickingSelect.innerText = `GO TO YOUR SELECTION`
-        allCardsWithImages.forEach(card => {
-
-            card.selected = ""
-
-        });
-        const classSelected = document.querySelectorAll(".selected");
-        for (i = 0; i < classSelected.length; i++) {
-            classSelected[i].className = "";
-        }
-        clickingInsideSelection.innerHTML = ""
-        selectedImages = []
-
+    nextPage = () => {
+        pageCounter++
+        const previousButton = document.getElementById('previous-page')
+        visibilityOn(previousButton)
+        console.log("next page")
+        allCardsWithImages.splice(0, allCardsWithImages.length)
+        fetchData(currentColor)
     }
-
-
-    function filterArray(event) {
+    previousPage = () => {
+        const previousButton = document.getElementById('previous-page')
+        if (pageCounter === 2) {
+            pageCounter--
+            visibilityOff(previousButton)
+            console.log("prev page")
+            allCardsWithImages.splice(0, allCardsWithImages.length)
+            fetchData(currentColor)
+        } else {
+            pageCounter--
+            console.log("prev page")
+            allCardsWithImages.splice(0, allCardsWithImages.length)
+            fetchData(currentColor)
+        }
+    }
+    filterArray = event => {
         const filterByDropDown = document.getElementById("filter")
-
         event.preventDefault()
-
         containerImages.innerHTML = ""
-
-
-
         let selectedFilter = filterByDropDown.value
-
 
         if (selectedFilter === "None") {
             console.log("no filter")
             displayImages(allCardsWithImages, containerImages)
 
-
         } else {
-
-
-            let filteredSelection = allCardsWithImages.filter((cardObject) => {
-
-                return cardObject.types[0] === selectedFilter
-
-            })
+            let filteredSelection = allCardsWithImages.filter((cardObject) => cardObject.types[0] === selectedFilter)
             displayImages(filteredSelection, containerImages)
-
-
         }
-
-
     }
-
-
-
-
-
-
-    function showAll(event) {
-
-
+    showAll = () => {
         visibilityOn(containerImages)
+        visibilityOn(filterBy)
         visibilityOff(clickingGoBack)
         visibilityOff(buttonClearSelection)
-
         clickingInsideSelection.innerHTML = ""
-
         displayImages(allCardsWithImages, containerImages)
+    }
+    function isCardRepeated(cardsArray, x) {
 
+        //this function could also be deployed while displaying
+        const uniqueCardsArray = cardsArray.filter()
 
-
+        return uniqueCardsArray
 
 
 
     }
-
-    function colorSelect(event) {
-        const dropDownStatus = document.getElementById("color")
-        const nextButton = document.getElementById('next-page')
-        const pTest = document.getElementById('testParagraph')
-
-
-        event.preventDefault()
-        allCardsWithImages.splice(0, allCardsWithImages.length)
-        containerImages.style.visibility = "visible"
-        nextButton.style.visibility = "visible"
-        visibilityOn(containerImages)
-        visibilityOn(nextButton)
-        visibilityOn(clickingSelect)
-
-        clickingInsideSelection.innerHTML = ""
-
-
-        switch (dropDownStatus.value) {
-            case "white":
-                console.log("We selected white")
-                currentColor = "white"
-                fetchData("white")
-                break
-
-            case "blue":
-                console.log("We selected blue")
-                currentColor = "blue"
-                fetchData("blue")
-                break
-
-            case "red":
-                console.log("We selected red")
-                currentColor = "red"
-                fetchData("red")
-                break
-
-            case "green":
-                console.log("We selected green")
-                currentColor = "green"
-                fetchData("green")
-                break
-
-            case "black":
-                console.log("We selected black")
-                currentColor = "black"
-                fetchData("black")
-                break
-
-        }
-
-
-
-    }
-
-
-    function toggleVisibility(whatToSwitch) {
-        if (whatToSwitch.style.visibility === "hidden") {
-            whatToSwitch.style.visibility = "visible"
-        } else {
-            whatToSwitch.style.visibility = "hidden"
-        }
-    }
-
-    function toggleDisable(whatToSwitch){
-        if(whatToSwitch.hasAttribute("disabled")){
-            console.log("should remove attribute")
-            whatToSwitch.disabled = false
-
-        } else {
-            whatToSwitch.disabled = true
-        }
-
-    }
-
-    function visibilityOn(makeVisible){makeVisible.style.visibility = "visible"}
-    function visibilityOff(hide){hide.style.visibility = "hidden"}
-
-
-
-
-
-
-
 })
 
 
