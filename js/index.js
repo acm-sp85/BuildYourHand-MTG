@@ -125,7 +125,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
             const createImages = document.createElement('img')
             createImages.src = e.imageUrl;
             createImages.id = e.id;
-            createImages.name = e.set;
             if (e.selected === "yes") {
                 createImages.className = "selected";
             } else {
