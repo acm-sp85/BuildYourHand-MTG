@@ -14,7 +14,7 @@
     <h1>Magic The Gathering</h1>
     <h2>Build your own Deck</h2>
     <form id="create-task-form" action="" method="POST">
-        <p>Choose your preferred deck color:</p>
+        <p>CHOOSE DECK COLOR:</p>
         <select name="" id="color" class="color-selected">
             <option value="" attribute=""></option>
             <option value="white">White</option>
@@ -27,6 +27,7 @@
     </form>
     <div class="container" style="visibility: visible">
         <form class="search-card-form">
+            <p>or</p>
             <p>SEARCH BY NAME</p>
             
             <input type="text" name="name" value="" placeholder="" class="input-text" />
@@ -35,7 +36,7 @@
             <input type="submit" name="submit" value="search card" class="submit" />
         </form>
      </div>   
-    <form id="filter-by" action="" style="visibility: visible;" >
+    <form id="filter-by" action="" style="visibility: hidden;" >
         <p>Filter by</p>
         <select name="filter-drop-down" id="filter" class="filter-selected" ">
             <option value="" attribute=""></option>
@@ -46,15 +47,15 @@
             <option value="Instant">Instant</option>
             <option value="Land">Land</option>
         </select>
-        <input type="submit" value="filter" id="filter-button">
+        <input type="submit" value="filter" id="filter-button" style="visibility: hidden;">
         
         
         
     </form>
-    <button id="selects" style="visibility: visible" >GO TO YOUR SELECTION</button>
+    <button id="selects" style="visibility: hidden">GO TO YOUR SELECTION</button>
     <br>
-    <button id="clear-selection"  >CLEAR SELECTION</button>
-    <button id="go-to-main"  >BACK TO SEARCH</button>
+    <button id="clear-selection" style="visibility: hidden;" >CLEAR SELECTION</button>
+    <button id="go-to-main" style="visibility: hidden;" >BACK TO SEARCH</button>
     <div id="selection-container">
 
         <ul class="card-selection-list"></ul>

@@ -35,6 +35,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     buttonNext.addEventListener('click', () => nextPage(event))
 
 
+
+
     //FUNCTIONS
 
     const fetchData = (color) => {
@@ -158,9 +160,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     function displaySelected(event) {
 
+        visibilityOn(clickingGoBack)
+        visibilityOn(buttonClearSelection)
+        visibilityOn(clickingInsideSelection)
+        visibilityOff(containerImages)
 
-        containerImages.style.visibility = "hidden"
-        clickingInsideSelection.style.visibility = "visible"
+
 
         clickingInsideSelection.innerHTML = ""
         console.log(selectedImages)
@@ -290,7 +295,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     function showAll(event) {
 
-        containerImages.style.visibility = "visible"
+
+        visibilityOn(containerImages)
+        visibilityOff(clickingGoBack)
+        visibilityOff(buttonClearSelection)
 
         clickingInsideSelection.innerHTML = ""
 
@@ -313,6 +321,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
         allCardsWithImages.splice(0, allCardsWithImages.length)
         containerImages.style.visibility = "visible"
         nextButton.style.visibility = "visible"
+        visibilityOn(containerImages)
+        visibilityOn(nextButton)
+        visibilityOn(clickingSelect)
 
         clickingInsideSelection.innerHTML = ""
 
@@ -355,15 +366,34 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
 
 
-    function visibilitySwitch(whatToSwitch) {
-
-        console.log(whatToSwitch.style.visibility)
+    function toggleVisibility(whatToSwitch) {
         if (whatToSwitch.style.visibility === "hidden") {
             whatToSwitch.style.visibility = "visible"
         } else {
             whatToSwitch.style.visibility = "hidden"
         }
     }
+
+    function toggleDisable(whatToSwitch){
+        if(whatToSwitch.hasAttribute("disabled")){
+            console.log("should remove attribute")
+            whatToSwitch.disabled = false
+
+        } else {
+            whatToSwitch.disabled = true
+        }
+
+    }
+
+    function visibilityOn(makeVisible){makeVisible.style.visibility = "visible"}
+    function visibilityOff(hide){hide.style.visibility = "hidden"}
+
+
+
+
+
+
+
 })
 
 
