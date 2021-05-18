@@ -1,9 +1,9 @@
-let pageCounter = 1
-let currentColor
-const allCardsWithImages = []
-let selectedImages = []
 
 document.addEventListener('DOMContentLoaded', (event) => {
+    let pageCounter = 1
+    let currentColor
+    const allCardsWithImages = []
+    let selectedImages = []
     const selectColor = document.getElementById("create-task-form")
     const searchByName = document.querySelector(".search-card-form")
     const filterBy = document.getElementById("filter-by")
@@ -76,13 +76,18 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
     fetchData = color => {
         fetch(`https://api.magicthegathering.io/v1/cards?colors=${color}&page=${pageCounter}`)
-            .then((result) => result.json())
-            .then((data) => {
-                const arrayOfCards = data.cards
-                containerImages.innerHTML = ""
-                createSelectionOfCardsWithImages(arrayOfCards)
-                displayImages(allCardsWithImages, containerImages)
-                console.log(allCardsWithImages)
+            .then(result => result.json())
+            .then(data => {
+                if(data.cards.length === 0){
+                    visibilityOff(buttonNext)
+                    pageCounter = pageCounter-1
+                } else {
+                    const arrayOfCards = data.cards
+                    containerImages.innerHTML = ""
+                    createSelectionOfCardsWithImages(arrayOfCards)
+                    displayImages(allCardsWithImages, containerImages)
+                    console.log(allCardsWithImages)
+                }
             })
     }
 
@@ -124,7 +129,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         array.forEach(e => {
             const createImages = document.createElement('img')
             createImages.src = e.imageUrl;
-            createImages.id = e.id;
+            createImages.id = e.name;
             if (e.selected === "yes") {
                 createImages.className = "selected";
             } else {
@@ -139,6 +144,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
         visibilityOn(clickingInsideSelection)
         visibilityOff(containerImages)
         visibilityOff(filterBy)
+        visibilityOff(buttonNext)
+        visibilityOff(buttonPrevious)
         clickingInsideSelection.innerHTML = ""
         displayImages(selectedImages, clickingInsideSelection)
     }
@@ -164,7 +171,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     clickingSelect.innerText = `GO TO YOUR SELECTION ${selectedImages.length + 1}/60`
 
                     //actually adding a key in the card object called selected and giving it the value "yes"
-                    allCardsWithImages.find(card => card.id === event.target.id).selected = "yes"
+                    allCardsWithImages.find(card => card.name === event.target.id).selected = "yes"
 
                     allCardsWithImages.forEach(card => {
                         if (card.selected === "yes" && !selectedImages.includes(card)) {
@@ -180,8 +187,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     //updates Selection Button
                     clickingSelect.innerText = `GO TO YOUR SELECTION ${selectedImages.length - 1}/60`
                     event.target.className = ""
-                    allCardsWithImages.find(card => card.id === event.target.id).selected = "no"
-                    let indexOfCard = selectedImages.indexOf(allCardsWithImages.find(element => element.id === event.target.id))
+                    allCardsWithImages.find(card => card.name === event.target.id).selected = "no"
+                    let indexOfCard = selectedImages.indexOf(allCardsWithImages.find(element => element.name === event.target.id))
 
                     if (indexOfCard > -1) {
                         selectedImages.splice(indexOfCard, 1);
@@ -196,8 +203,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     //updates Selection Button
                     clickingSelect.innerText = `GO TO YOUR SELECTION ${selectedImages.length - 1}/60`
                     event.target.className = ""
-                    allCardsWithImages.find(card => card.id === event.target.id).selected = "no"
-                    let indexOfCard = selectedImages.indexOf(allCardsWithImages.find(element => element.id === event.target.id))
+                    allCardsWithImages.find(card => card.name === event.target.id).selected = "no"
+                    let indexOfCard = selectedImages.indexOf(allCardsWithImages.find(element => element.name === event.target.id))
 
                     if (indexOfCard > -1) {
                         selectedImages.splice(indexOfCard, 1);
@@ -211,6 +218,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         }
     }
     nextPage = () => {
+        containerImages.innerHTML = ""
         pageCounter++
         const previousButton = document.getElementById('previous-page')
         visibilityOn(previousButton)
@@ -220,6 +228,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
     previousPage = () => {
         const previousButton = document.getElementById('previous-page')
+        visibilityOn(buttonNext)
+        containerImages.innerHTML = ""
+
         if (pageCounter === 2) {
             pageCounter--
             visibilityOff(previousButton)
@@ -251,21 +262,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
     showAll = () => {
         visibilityOn(containerImages)
         visibilityOn(filterBy)
+        visibilityOn(buttonNext)
+        if (pageCounter>1){visibilityOn(buttonPrevious)}
         visibilityOff(clickingGoBack)
         visibilityOff(buttonClearSelection)
         clickingInsideSelection.innerHTML = ""
         displayImages(allCardsWithImages, containerImages)
     }
-    function isCardRepeated(cardsArray, x) {
 
-        //this function could also be deployed while displaying
-        const uniqueCardsArray = cardsArray.filter()
-
-        return uniqueCardsArray
-
-
-
-    }
 })
 
 
