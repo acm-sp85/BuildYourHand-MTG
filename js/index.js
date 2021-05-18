@@ -78,9 +78,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
         fetch(`https://api.magicthegathering.io/v1/cards?colors=${color}&page=${pageCounter}`)
             .then(result => result.json())
             .then(data => {
-                if(data.cards.length === 0){
+                if (data.cards.length === 0) {
                     visibilityOff(buttonNext)
-                    pageCounter = pageCounter-1
+                    pageCounter = pageCounter - 1
                 } else {
                     const arrayOfCards = data.cards
                     containerImages.innerHTML = ""
@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         arrayOfCards.map(card => {
             if (card.imageUrl !== undefined) {
                 allCardsWithImages.push(card)
-            } 
+            }
         })
     }
 
@@ -263,7 +263,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         visibilityOn(containerImages)
         visibilityOn(filterBy)
         visibilityOn(buttonNext)
-        if (pageCounter>1){visibilityOn(buttonPrevious)}
+        if (pageCounter > 1) { visibilityOn(buttonPrevious) }
         visibilityOff(clickingGoBack)
         visibilityOff(buttonClearSelection)
         clickingInsideSelection.innerHTML = ""
