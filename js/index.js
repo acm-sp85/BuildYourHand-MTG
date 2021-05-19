@@ -110,6 +110,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 })
                 visibilityOn(containerImages)
                 visibilityOn(clickingSelect)
+                visibilityOff(buttonPrevious)
+                visibilityOff(buttonNext)
                 clickingInsideSelection.innerHTML = ""
                 displayImages(allCardsWithImages, containerImages)
             })
