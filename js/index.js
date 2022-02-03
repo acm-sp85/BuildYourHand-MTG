@@ -2,7 +2,7 @@
 document.addEventListener('DOMContentLoaded', (event) => {
     let pageCounter = 1
     let currentColor
-    const allCardsWithImages = []
+    let allCardsWithImages = []
     let selectedImages = []
     const selectColor = document.getElementById("create-task-form")
     const searchByName = document.querySelector(".search-card-form")
@@ -140,6 +140,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             whereToDisplay.append(createImages)
         });
     }
+
     displaySelected = () => {
         visibilityOn(clickingGoBack)
         visibilityOn(buttonClearSelection)
@@ -151,6 +152,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         clickingInsideSelection.innerHTML = ""
         displayImages(selectedImages, clickingInsideSelection)
     }
+
     clearSelection = () => {
         clickingSelect.innerText = `GO TO YOUR SELECTION`
         allCardsWithImages.forEach(card => card.selected = "");
@@ -161,6 +163,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         clickingInsideSelection.innerHTML = ""
         selectedImages = []
     }
+
     selectCard = event => {
         if (event.target.id != "selection-container") {
 
@@ -219,6 +222,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             }
         }
     }
+
     nextPage = () => {
         containerImages.innerHTML = ""
         pageCounter++
@@ -228,6 +232,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         allCardsWithImages.splice(0, allCardsWithImages.length)
         fetchData(currentColor)
     }
+
     previousPage = () => {
         const previousButton = document.getElementById('previous-page')
         visibilityOn(buttonNext)
@@ -246,6 +251,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             fetchData(currentColor)
         }
     }
+
     filterArray = event => {
         const filterByDropDown = document.getElementById("filter")
         event.preventDefault()
@@ -261,6 +267,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             displayImages(filteredSelection, containerImages)
         }
     }
+
     showAll = () => {
         visibilityOn(containerImages)
         visibilityOn(filterBy)
@@ -271,6 +278,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
         clickingInsideSelection.innerHTML = ""
         displayImages(allCardsWithImages, containerImages)
     }
+
+
 
 })
 
