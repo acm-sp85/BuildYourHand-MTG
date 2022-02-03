@@ -27,7 +27,6 @@ API documentarion: https://docs.magicthegathering.io/
 This app doesn't need to be installed, just open `index.html` in the browser.
 
 <br>
-<br>
 
 ## Stack
 
